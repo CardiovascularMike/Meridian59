@@ -84,13 +84,13 @@ messages:
 
    NewUsed(what = $)
    {
-      send(what,@ResetPlayerArms);
+      send(what,@ResetPlayerArms, #what=self);
       propagate;
    }
 
    NewUnused(what = $)
    {
-      send(what,@ResetPlayerArms);
+      send(what,@ResetPlayerArms, #what=self);
       propagate;
    }
 
