@@ -193,7 +193,7 @@ messages:
 
    OverrideArmCount()
    {
-      return 1;
+      return 2;
    }
    
    % No alterations when we hit the target....

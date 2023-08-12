@@ -377,7 +377,7 @@ resources:
    player_leftarm_a_rsc = bla.bgf
    player_leftarm_b_rsc = blb.bgf
    barearm_rightarm_gauntlet_male = bri.bgf
-   barearm_rightarm_gauntlet_female =brj.bgf
+   barearm_rightarm_gauntlet_female = brj.bgf
    barearm_leftarm_gauntlet_male = bli.bgf
    barearm_leftarm_gauntlet_female = blj.bgf
    nakedleftarm_male = blg.bgf
@@ -8676,9 +8676,9 @@ messages:
       }
       if iArmCount > 0
       {
-         if iArmCount = 1
+         if iArmCount = 2
          {
-            if send(who,@GetGender) = GENDER_MALE
+            if piGender = GENDER_MALE
             {
                prRight_arm = standardshirt_rightarm_gauntlet_male;
                prleft_arm = standardshirt_leftarm_gauntlet_male;
@@ -8689,9 +8689,9 @@ messages:
                prleft_arm = standardshirt_leftarm_gauntlet_femaile;
             }
          }
-         if iArmCount = 2
+         if iArmCount = 4
          {
-            if send(who,@GetGender) = GENDER_MALE
+            if piGender = GENDER_MALE
             {
                prRight_arm = nakedrightarm_male;
                prleft_arm = nakedleftarm_male;
@@ -8702,9 +8702,9 @@ messages:
                prleft_arm = nakedleftarm_female;
             }
          }
-         if iArmCount = 3
+         if iArmCount = 6
          {
-            if send(who,#GetGender) = GENDER_MALE
+            if piGender = GENDER_MALE
             {
                prRight_arm = barearm_rightarm_gauntlet_male;
                prleft_arm = barearm_leftarm_gauntlet_male;
