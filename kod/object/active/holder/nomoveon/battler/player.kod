@@ -376,6 +376,14 @@ resources:
    
    player_leftarm_a_rsc = bla.bgf
    player_leftarm_b_rsc = blb.bgf
+   barearm_rightarm_gauntlet_male = bri.bgf
+   barearm_rightarm_gauntlet_female =brj.bgf
+   barearm_leftarm_gauntlet_male = bli.bgf
+   barearm_leftarm_gauntlet_female = blj.bgf
+   nakedleftarm_male = blg.bgf
+   nakedrightarm_male = brg.bgf
+   nakedleftarm_female = blh.bgf
+   nakedrightarm_female = brh.bgf
    
    % hair for Rob
    player_toupee_q_rsc = ptq.bgf
@@ -8655,22 +8663,60 @@ messages:
    ResetPlayerArms(alldone = TRUE)
    "Sets our icon to its natural, default-shirted state."
    {
-      local iShirt_xlat, i, bFound;
+      local iShirt_xlat, i, bFound, iArmCount;
       poArms_set = $;
-
+      iArmCount = 0;
       bFound = FALSE;
       for i in plUsing
       { 
          if Send(i,@OverrideArms)
          {
-            % Gauntlets, probably.
-            prRight_arm = Send(i,@GetOverrideRightArm,#who=self);
-            prleft_arm = Send(i,@GetOverrideleftArm,#who=self);
-            bFound = TRUE;
+            iArmCount = iArmCount + send(i,@OverrideArmCount);
          }    
       }
-      
-      if NOT bFound
+      if iArmCount > 0
+      {
+         if iArmCount = 1
+         {
+            if send(who,@GetGender) = GENDER_MALE
+            {
+               prRight_arm = standardshirt_rightarm_gauntlet_male;
+               prleft_arm = standardshirt_leftarm_gauntlet_male;
+            }
+            else
+            {
+               prRight_arm = standardshirt_rightarm_gauntlet_female;
+               prleft_arm = standardshirt_leftarm_gauntlet_femaile;
+            }
+         }
+         if iArmCount = 2
+         {
+            if send(who,@GetGender) = GENDER_MALE
+            {
+               prRight_arm = nakedrightarm_male;
+               prleft_arm = nakedleftarm_male;
+            }
+            else
+            {
+               prRight_arm = nakedrightarm_female;
+               prleft_arm = nakedleftarm_female;
+            }
+         }
+         if iArmCount = 3
+         {
+            if send(who,#GetGender) = GENDER_MALE
+            {
+               prRight_arm = barearm_rightarm_gauntlet_male;
+               prleft_arm = barearm_leftarm_gauntlet_male;
+            }
+            else
+            {
+               prRight_arm = barearm_rightarm_gauntlet_female;
+               prleft_arm = barearm_leftarm_gauntlet_female;
+            }
+         }
+      }
+      else
       {
          if piGender = GENDER_MALE
          {

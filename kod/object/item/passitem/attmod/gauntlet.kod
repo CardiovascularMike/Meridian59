@@ -190,73 +190,12 @@ messages:
    {
       return TRUE;
    }
-   
-   GetOverrideRightArm(who=$)
-   {  
-      local i, bFound;
-      
-      bFound = FALSE;
-      for i in send(who,@GetPlayerUsing)
-      {
-         if isClass(i,&TankTop)
-         {
-            bFound = TRUE;
-            
-            break;
-         }
-      }
-      
-      if bFound
-      {
-         if send(who,@GetGender) = GENDER_MALE
-         {
-            return barearm_rightarm_gauntlet_male;
-         }
-      
-         return barearm_rightarm_gauntlet_female;
-      }      
-      
-      if send(who,@GetGender) = GENDER_MALE
-      {
-         return standardshirt_rightarm_gauntlet_male;
-      }
-      
-      return standardshirt_rightarm_gauntlet_female;
-   }
 
-   GetOverrideLeftArm(who=$)
+   OverrideArmCount()
    {
-      local i, bFound;
-
-      bFound = FALSE;
-      for i in send(who,@GetPlayerUsing)
-      {
-         if isClass(i,&TankTop)
-         {
-            bFound = TRUE;
-
-            break;
-         }
-      }
-      
-      if bFound
-      {
-         if send(who,@GetGender) = GENDER_MALE
-         {
-            return barearm_leftarm_gauntlet_male;
-         }
-      
-         return barearm_leftarm_gauntlet_female;
-      }
-
-      if send(who,@GetGender) = GENDER_MALE
-      {
-         return standardshirt_leftarm_gauntlet_male;
-      }
-      
-      return standardshirt_leftarm_gauntlet_female;
+      return 1;
    }
-
+   
    % No alterations when we hit the target....
    WeaponHitTarget()
    {

@@ -107,6 +107,15 @@ messages:
       return TRUE;
    }
 
+   OverrideArms()
+   {
+      return TRUE;
+   }
+
+   OverrideArmCount()
+   {
+      return 2;
+   }
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
