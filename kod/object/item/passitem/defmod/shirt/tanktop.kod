@@ -82,13 +82,13 @@ messages:
       return;
    }
 
-   NewUsed()
+   NewUsed(what = $)
    {
       send(what,@ResetPlayerArms);
       propagate;
    }
 
-   NewUnused()
+   NewUnused(what = $)
    {
       send(what,@ResetPlayerArms);
       propagate;
