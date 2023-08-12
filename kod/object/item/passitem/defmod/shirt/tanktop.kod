@@ -84,13 +84,15 @@ messages:
 
    NewUsed()
    {
-      send(poOwner,@ResetPlayerArms);
+      send(self,@ResetPlayerArms);
+
       propagate;
    }
 
    NewUnused()
    {
-      send(poOwner,@ResetPlayerArms);
+      send(self,@ResetPlayerArms);
+      
       propagate;
    }
 
