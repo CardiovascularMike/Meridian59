@@ -101,37 +101,7 @@ messages:
 
    NewUsed(what = $)
    {
-      local i, oFound, iPriority;
-      
-      oFound=$;
-      for i in send(what,@GetPlayerUsing)
-      {
-         iPriority = send(i,@ItemChangesArms);
-         if iPriority <> 0
-         {
-            if oFound = $ 
-            {
-               oFound = i;
-            }
-            else
-            {
-               if iPriority > send(oFound,@ItemChangesArms)
-               {
-                  oFound = i;
-               }
-            }	    
-         }	 
-      }
-      
-      if oFound <> $
-      {
-         send(oFound,@DoPlayerArt); 
-      }
-      else
-      {
-         send(what,@ResetPlayerArms);
-      }
-
+      send(what,@ResetPlayerArms);
       % We're also a defense modifier
       Send(what,@AddDefenseModifier,#what=self);
       
@@ -140,37 +110,8 @@ messages:
 
    NewUnused(what = $)
    {
-      local i, oFound, iPriority;
       
-      oFound=$;
-      for i in send(what,@GetPlayerUsing)
-      {
-         iPriority = send(i,@ItemChangesArms);
-         if iPriority <> 0
-         {
-            if oFound <> $ 
-            {
-               if iPriority > send(oFound,@ItemChangesArms)
-               {
-                  oFound = i;
-               }
-            }
-            else
-            {
-               oFound = i;
-            }
-         }	 
-      }
-      
-      if oFound <> $
-      {
-         send(oFound,@DoPlayerArt); 
-      }
-      else
-      {
-         send(what,@ResetPlayerArms);
-      }
-
+      send(what,@ResetPlayerArms);
       % We're also a defense modifier
       Send(what,@RemoveDefenseModifier,#what=self);
 
