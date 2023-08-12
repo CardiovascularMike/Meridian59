@@ -101,7 +101,7 @@ messages:
 
    NewUsed(what = $)
    {
-      send(what,@ResetPlayerArms, #what=self);
+      send(poOwner,@ResetPlayerArms);
       % We're also a defense modifier
       Send(what,@AddDefenseModifier,#what=self);
       
@@ -111,7 +111,7 @@ messages:
    NewUnused(what = $)
    {
       
-      send(what,@ResetPlayerArms, #what=self);
+      send(poOwner,@ResetPlayerArms);
       % We're also a defense modifier
       Send(what,@RemoveDefenseModifier,#what=self);
 

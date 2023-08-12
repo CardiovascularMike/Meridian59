@@ -82,15 +82,15 @@ messages:
       return;
    }
 
-   NewUsed(what = $)
+   NewUsed()
    {
-      send(what,@ResetPlayerArms, #what=self);
+      send(poOwner,@ResetPlayerArms);
       propagate;
    }
 
-   NewUnused(what = $)
+   NewUnused()
    {
-      send(what,@ResetPlayerArms, #what=self);
+      send(poOwner,@ResetPlayerArms);
       propagate;
    }
 
