@@ -8686,7 +8686,7 @@ messages:
             else
             {
                prRight_arm = standardshirt_rightarm_gauntlet_female;
-               prleft_arm = standardshirt_leftarm_gauntlet_femaile;
+               prleft_arm = standardshirt_leftarm_gauntlet_female;
             }
          }
          if iArmCount = 4
