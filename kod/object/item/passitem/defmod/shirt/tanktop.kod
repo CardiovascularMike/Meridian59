@@ -84,15 +84,15 @@ messages:
 
    NewUsed()
    {
-      send(self,@ResetPlayerArms);
+      post(self,@ResetPlayerArms);
 
       propagate;
    }
 
    NewUnused()
    {
-      send(self,@ResetPlayerArms);
-      
+      post(self,@ResetPlayerArms);
+
       propagate;
    }
 
