@@ -244,6 +244,7 @@ resources:
    player_attack_out_of_punch_range = "You can't reach %s%s with your %s."
    player_attack_out_of_spell_range = "%s%s is out of range."
    player_attack_not_in_view = "You can't see your selected target."
+   msgnohurtme = "You don't want to hurt yourself today."
 
    player_no_target_self = "You cannot attack yourself."
    player_no_target_self_spell = "You cannot cast this spell on yourself."
@@ -4091,6 +4092,11 @@ messages:
                      "[",iTargetRow,iTargetCol,"] that was behind them.");
             }
 
+            if oTarget = self
+            {
+               Send(self,@MsgSendUser, #message_rsc=msgnohurtme);
+               return FALSE;
+            }
             Send(self,@MsgSendUser,#message_rsc=player_attack_not_in_view);
 
             return FALSE;
