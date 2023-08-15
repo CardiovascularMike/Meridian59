@@ -243,7 +243,7 @@ resources:
    player_attack_out_of_range = "%s%s is too far away to hit with %s%s."
    player_attack_out_of_punch_range = "You can't reach %s%s with your %s."
    player_attack_out_of_spell_range = "%s%s is out of range."
-   player_attack_not_in_view = "You can't see your selected target."
+   player_attack_not_in_view = "You can't see your selected target - butthead."
    msgnohurtme = "You don't want to hurt yourself today."
 
    player_no_target_self = "You cannot attack yourself."
