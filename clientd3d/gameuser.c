@@ -97,7 +97,7 @@ void UserAttackClosest(int action)
 			RequestAttack(ATTACK_NORMAL, idTarget);
 		else
          if (idTarget == player.id)
-            GameMessage("Doh!");
+            GameMessage("You can't attack yourself.");
          else
 			   GameMessage(GetString(hInst, IDS_TARGETNOTVISIBLEFORATTACK));
 		return;
