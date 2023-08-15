@@ -4094,11 +4094,11 @@ messages:
 
             if oTarget = self
             {
-               Send(self,@MsgSendUser, #message_rsc=msgnohurtme);
+               Send(self,@MsgSendUser,#message_rsc=msgnohurtme);
                return FALSE;
             }
             Send(self,@MsgSendUser,#message_rsc=player_attack_not_in_view);
-
+            Send(self,@MsgSendUser,#message_rsc=msgnohurtme);
             return FALSE;
          }
       }
