@@ -84,21 +84,15 @@ messages:
 
    NewUsed()
    {
-      local iSkinColor, translation;
+      post(poOwner,@ResetPlayerArms);
 
-      translation = send(self,@GetPaletteTranslation);
+      propagate;
+   }
 
-      iSkinColor = send(poOwner,@GetSkinColor);
+   NewUnused()
+   {
+      post(poOwner,@ResetPlayerArms);
 
-      % The exotic shirts look better if you shift down one level.
-      iSkinColor = bound(iSkinColor-1,1,3);
-
-      translation = send(SYS,@EncodeTwoColorXlat,
-                         #color1=send(SYS,@DecodePrimaryColor,#Xlat=translation),
-                         #color2=iSkinColor);
-
-      send(self,@SetPaletteTranslation,#translation=translation);
-      
       propagate;
    }
 
@@ -107,6 +101,15 @@ messages:
       return TRUE;
    }
 
+   OverrideArms()
+   {
+      return TRUE;
+   }
+
+   OverrideArmCount()
+   {
+      return 4;
+   }
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
