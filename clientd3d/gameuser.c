@@ -148,7 +148,7 @@ void GotObjectContents(ID object_id, list_type contents)
       return;
    }
 
-   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), contents, LD_MULTIPLESEL);   
+   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), contents, LD_MULTIPLESEL | LD_AMOUNTS | LD_SORT);   
 
    for (l = sel_list; l != NULL; l = l->next)
       RequestPickup(((room_contents_node *) (l->data))->obj.id);
