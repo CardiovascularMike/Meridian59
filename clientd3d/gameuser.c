@@ -151,7 +151,7 @@ void GotObjectContents(ID object_id, list_type contents)
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), contents, LD_MULTIPLESEL | LD_AMOUNTS | LD_SORT);   
 
    for (l = sel_list; l != NULL; l = l->next)
-      RequestPickup(((room_contents_node *) (l->data))->obj.id);
+      RequestPickup_Cont(((room_contents_node *) (l->data))->obj.id);
 
    ObjectListDestroy(sel_list);
 }
