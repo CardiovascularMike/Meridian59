@@ -3742,6 +3742,8 @@ messages:
       Send(self,@NewHold,#what=what);
       return;
       }
+
+      return;
    }
 
    UserBlockedSend(what = $)
