@@ -3607,6 +3607,88 @@ messages:
 
          return;
       }
+        
+      % This includes the corpse pointer, which prevents people
+      %  from looting each other's kills.
+      if NOT Send(what,@ReqNewOwnerAttributes,#who=self)
+      {
+         return FALSE;
+      }
+
+      if oOldOwner <> $
+         AND NOT Send(oOldOwner,@ReqTaker,#what=what,#taker=self)
+      {
+         Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+              #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
+         Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
+              
+         return;
+      }
+
+      if NOT Send(what,@ReqNewOwner,#what=self)
+      {
+         Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+              #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
+         Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
+              
+         return;
+      }
+        
+      if NOT Send(self,@ReqNewHold,#what=what) 
+      {
+         if IsClass(what,&NumberItem)
+         {
+            iCan_hold = Send(self,@GetNumberCanHold,#what=what);
+            if iCan_hold > 0
+            {
+               oSplit = Send(what,@Split,#number=iCan_hold);
+               if Send(what,@ReqNewOwner,#what=oSplit)
+               {
+                  Send(self,@MsgSendUser,#message_rsc=user_got_some,
+                       #parm1=Send(what,@GetName));
+                  Send(self,@NewHold,#what=oSplit);
+                  
+                  return;
+               }
+               else
+               {
+                  Send(what,@AddNumber,#number=iCan_hold);
+                  Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                       #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
+                  Send(self, @WaveSendUser, #what=self, 
+                       #wave_rsc = user_cant_pickup_item_wav_rsc);
+                       
+                  return;
+               }
+            }
+            else
+            {
+               Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                    #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
+               Send(self, @WaveSendUser, #what=self, 
+                    #wave_rsc = user_cant_pickup_item_wav_rsc);
+                    
+               return;
+            }
+         }
+         else
+         {
+            %  KLUDGE!!  -Asif
+            if not IsClass(what,&HunterSword)
+            {
+               Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                    #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
+               Send(self, @WaveSendUser, #what=self, 
+                    #wave_rsc = user_cant_pickup_item_wav_rsc);
+            }
+            
+            return;                      
+         }        
+      }
+
+      Send(self,@NewHold,#what=what);
+      
+      return;
    }
 
    UserGetCont(what=$,number=$)
