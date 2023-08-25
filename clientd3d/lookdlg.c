@@ -596,12 +596,14 @@ list_type DisplayLookList(HWND hParent, char *title, list_type l, int flags)
 
    /* If multiple selections allowed, make list box multiple select */
    if (flags & LD_MULTIPLESEL)
+   {
       if (flags & LD_SORT)
          valid = DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_ITEMLISTMULTISORT), hParent,
 			     LookDialogProc, (LPARAM) &dlg_info);
       else
          valid = DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_ITEMLISTMULTIPLE), hParent,
 			     LookDialogProc, (LPARAM) &dlg_info);
+   }
    else 
       if (flags & LD_SORT)
 	 valid = DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_ITEMLISTSORTED), hParent,
