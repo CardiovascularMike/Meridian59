@@ -968,7 +968,7 @@ messages:
       }
       if liClient_cmd = BP_REQ_GETCONT
       {
-         oWhat = Nth(client,msg,2);
+         oWhat = Nth(client,msg,1);
          Send(self,@UserGetCont,#what=oWhat,#number=number_stuff);
 
          return;
