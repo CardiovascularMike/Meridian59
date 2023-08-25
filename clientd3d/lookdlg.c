@@ -598,6 +598,9 @@ list_type DisplayLookList(HWND hParent, char *title, list_type l, int flags)
    if (flags & LD_MULTIPLESEL)
       valid = DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_ITEMLISTMULTIPLE), hParent,
 			     LookDialogProc, (LPARAM) &dlg_info);
+      if (flags & LD_SORT)
+         valid = DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_ITEMLISTMULTISORT), hParent,
+			     LookDialogProc, (LPARAM) &dlg_info);
    else 
       if (flags & LD_SORT)
 	 valid = DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_ITEMLISTSORTED), hParent,
