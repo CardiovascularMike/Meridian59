@@ -3719,7 +3719,7 @@ messages:
       if IsClass(what,&NumberItem)
       {
          oSplit = Send(what,@Split,#number=number);
-         iCan_hold = Send(self,@GetNumberCanHold,#what=what);
+         iCan_hold = Send(self,@GetNumberCanHold,#what=oSplit);
          if iCan_hold = 0
          {
             return;
