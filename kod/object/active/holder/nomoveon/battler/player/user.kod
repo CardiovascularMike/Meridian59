@@ -3718,13 +3718,12 @@ messages:
         
       if IsClass(what,&NumberItem)
       {
-         oSplit = Send(what,@Split,#number=number);
-         iCan_hold = Send(self,@GetNumberCanHold,#what=oSplit);
+         iCan_hold = Send(self,@GetNumberCanHold,#what=What);
          if iCan_hold = 0
          {
             return;
          }
-         if iCan_hold < oSplit
+         if iCan_hold < number
          {
             oSplit = Send(what,@Split,#number=iCan_hold);
                if Send(what,@ReqNewOwner,#what=oSplit)
@@ -3738,6 +3737,7 @@ messages:
          }
          else
          {
+            oSplit = Send(what,@Split,#number=number);
             if Send(what,@ReqNewOwner,#what=oSplit)
             {
                Send(self,@MsgSendUser,#message_rsc=user_got_some,
