@@ -3718,7 +3718,7 @@ messages:
         
       if IsClass(what,&NumberItem)
       {
-         oSplit = Send(what,@Split,#number=2);
+         oSplit = Send(what,@Split,#number=number);
          if Send(what,@ReqNewOwner,#what=oSplit)
          {
             Send(self,@MsgSendUser,#message_rsc=user_got_some,
