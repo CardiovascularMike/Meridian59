@@ -3693,7 +3693,7 @@ messages:
 
    UserGetCont(what=$,number=$)
    {
-      local oOldOwner, oSplit;
+      local oOldOwner, oSplit, iCan_hold;
 
       oOldOwner = Send(what,@GetOwner);
 
@@ -3719,28 +3719,48 @@ messages:
       if IsClass(what,&NumberItem)
       {
          oSplit = Send(what,@Split,#number=number);
-         if Send(what,@ReqNewOwner,#what=oSplit)
+         iCan_hold = Send(self,@GetNumberCanHold,#what=what);
+         if iCan_hold = 0
          {
-            Send(self,@MsgSendUser,#message_rsc=user_got_some,
-                  #parm1=Send(what,@GetName));
-            Send(self,@NewHold,#what=oSplit);
-                  
             return;
+         }
+         if iCan_hold < oSplit
+         {
+            oSplit = Send(what,@Split,#number=iCan_hold);
+               if Send(what,@ReqNewOwner,#what=oSplit)
+               {
+                  Send(self,@MsgSendUser,#message_rsc=user_got_some,
+                       #parm1=Send(what,@GetName));
+                  Send(self,@NewHold,#what=oSplit);
+                  
+                  return;
+               }
          }
          else
          {
-            Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
-                  #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
-            Send(self, @WaveSendUser, #what=self, 
-                  #wave_rsc = user_cant_pickup_item_wav_rsc);
+            if Send(what,@ReqNewOwner,#what=oSplit)
+            {
+               Send(self,@MsgSendUser,#message_rsc=user_got_some,
+                     #parm1=Send(what,@GetName));
+               Send(self,@NewHold,#what=oSplit);
+                  
+               return;
+            }
+            else
+            {
+               Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                     #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
+               Send(self, @WaveSendUser, #what=self, 
+                     #wave_rsc = user_cant_pickup_item_wav_rsc);
                        
-            return;
+               return;
+            }
          }
       }
       else
       {
-      Send(self,@NewHold,#what=what);
-      return;
+         Send(self,@NewHold,#what=what);
+         return;
       }
 
       return;
