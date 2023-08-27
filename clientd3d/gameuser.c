@@ -130,6 +130,40 @@ void UserPickup(void)
    ObjectListDestroy(sel_list);
    list_delete(square_list);
 }
+
+/******ObjectNodeAdd*******/
+object_node *ObjectListAdd(object_node *head, object_node *new_node) {
+    if (head == NULL) {
+        return new_node;
+    }
+
+    object_node *current = head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    current->next = new_node;
+    new_node->next = NULL;
+    
+    return head;
+}
+
+// Function to concatenate two linked lists
+object_node *ConcatenateLists(object_node *list1, object_node *list2) {
+    if (list1 == NULL) {
+        return list2;
+    }
+
+    object_node *current = list1;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    current->next = list2;
+
+    return list1;
+}
+
 /************************************************************************/
 /*
  * GotObjectContents:  Display contents of object, and let user pick up objects.
@@ -154,7 +188,7 @@ void GotObjectContents(ID object_id, list_type contents)
       //RequestPickup_Cont((object_node *) (l->data));
 
    //ObjectListDestroy(sel_list);
-      list_type number_items = NULL;  // List for NumberItem elements
+   list_type number_items = NULL;  // List for NumberItem elements
    list_type other_items = NULL;   // List for other elements
 
    // Separate contents into number items and other items
@@ -170,7 +204,7 @@ void GotObjectContents(ID object_id, list_type contents)
    }
 
    // Sort the list of NumberItem alphabetically
-   number_items = ObjectListSortAlphabetically(number_items);
+   //number_items = ObjectListSortAlphabetically(number_items);
 
    // Combine the sorted NumberItem list with the other items list
    list_type merged_list = ConcatenateLists(number_items, other_items);
