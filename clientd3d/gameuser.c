@@ -166,7 +166,7 @@ void GotObjectContents(ID object_id, list_type contents)
    }
    for (l = contents; l != NULL; l = l->next)
    {
-      if !(IsNumberObj((object_node *)(l->data))->id) 
+      if (!(IsNumberObj((object_node *)(l->data))->id))
       {
          number_items = list_add_item(number_items, ((object_node *)(l->data)));
       }
