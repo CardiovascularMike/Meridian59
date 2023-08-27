@@ -130,23 +130,6 @@ void UserPickup(void)
    ObjectListDestroy(sel_list);
    list_delete(square_list);
 }
-
-// Function to concatenate two linked lists
-object_node *ConcatenateLists(list_type list1, lyst_type list2) {
-    if (list1 == NULL) {
-        return list2;
-    }
-
-    object_node *current = list1;
-    while (current->next != NULL) {
-        current = current->next;
-    }
-
-    current->next = list2;
-
-    return list1;
-}
-
 /************************************************************************/
 /*
  * GotObjectContents:  Display contents of object, and let user pick up objects.
@@ -172,7 +155,6 @@ void GotObjectContents(ID object_id, list_type contents)
 
    //ObjectListDestroy(sel_list);
    list_type number_items = NULL;  // List for NumberItem elements
-   list_type other_items = NULL;   // List for other elements
 
    // Separate contents into number items and other items
    for (l = contents; l != NULL; l = l->next)
@@ -180,29 +162,25 @@ void GotObjectContents(ID object_id, list_type contents)
       if (IsNumberObj((object_node *)(l->data)->id)) {
          // This is a NumberItem
          number_items = list_add_item(number_items, (object_node *)(l->data)->id);
-      } else {
-         // This is not a NumberItem
-         other_items = list_add_item(other_items, (object_node *)(l->data)->id);
+         }
+   }
+   for (l = contents; l != NULL; l = l->next)
+   {
+      if (!IsNumberObj((object_node *)(l->data)->id)) 
+      {
+         number_items = list_add_item(number_items, (object_node *)(l->data)->id);
       }
    }
 
-   // Sort the list of NumberItem alphabetically
-   //number_items = ObjectListSortAlphabetically(number_items);
-
-   // Combine the sorted NumberItem list with the other items list
-   list_type merged_list = ConcatenateLists(number_items, other_items);
-
    // Display the concatenated and sorted list in the listbox
-   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), merged_list, LD_MULTIPLESEL | LD_AMOUNTS | LD_SORT);
+   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS | LD_SORT);
 
    for (l = sel_list; l != NULL; l = l->next)
       RequestPickup_Cont((object_node *)(l->data));
 
    // Cleanup: Destroy lists
    ObjectListDestroy(sel_list);
-   ObjectListDestroy(merged_list);
    ObjectListDestroy(number_items);
-   ObjectListDestroy(other_items);
 }
 /************************************************************************/
 /*
