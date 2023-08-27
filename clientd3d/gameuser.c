@@ -131,25 +131,8 @@ void UserPickup(void)
    list_delete(square_list);
 }
 
-/******ObjectNodeAdd*******/
-object_node *ObjectListAdd(object_node *head, object_node *new_node) {
-    if (head == NULL) {
-        return new_node;
-    }
-
-    object_node *current = head;
-    while (current->next != NULL) {
-        current = current->next;
-    }
-
-    current->next = new_node;
-    new_node->next = NULL;
-    
-    return head;
-}
-
 // Function to concatenate two linked lists
-object_node *ConcatenateLists(object_node *list1, object_node *list2) {
+object_node *ConcatenateLists(list_type list1, lyst_type list2) {
     if (list1 == NULL) {
         return list2;
     }
@@ -194,12 +177,12 @@ void GotObjectContents(ID object_id, list_type contents)
    // Separate contents into number items and other items
    for (l = contents; l != NULL; l = l->next)
    {
-      if (IsNumberObj((object_node *)(l->data))) {
+      if (IsNumberObj((object_node *)(l->data)->id)) {
          // This is a NumberItem
-         number_items = ObjectListAdd(number_items, (object_node *)(l->data));
+         number_items = list_add_item(number_items, (object_node *)(l->data)->id);
       } else {
          // This is not a NumberItem
-         other_items = ObjectListAdd(other_items, (object_node *)(l->data));
+         other_items = list_add_item(other_items, (object_node *)(l->data)->id);
       }
    }
 
