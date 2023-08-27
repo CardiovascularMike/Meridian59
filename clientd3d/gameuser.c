@@ -159,14 +159,15 @@ void GotObjectContents(ID object_id, list_type contents)
    // Separate contents into number items and other items
    for (l = contents; l != NULL; l = l->next)
    {
-      if (IsNumberObj((object_node *)(l->data)->id)) {
+    if (IsNumberObj(((object_node *)(l->data))->obj.id)) {
          // This is a NumberItem
          number_items = list_add_item(number_items, (object_node *)(l->data));
          }
    }
    for (l = contents; l != NULL; l = l->next)
    {
-      if (!(IsNumberObj((object_node *)(l->data))->id))
+      //obj = (object_node *)(l->data)
+      if (!(IsNumberObj(((object_node *)(l->data))->obj.id)))
       {
          number_items = list_add_item(number_items, ((object_node *)(l->data)));
       }
