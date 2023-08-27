@@ -148,12 +148,44 @@ void GotObjectContents(ID object_id, list_type contents)
       return;
    }
 
-   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), contents, LD_MULTIPLESEL | LD_AMOUNTS | LD_SORT);   
+   //sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), contents, LD_MULTIPLESEL | LD_AMOUNTS | LD_SORT);   
+
+   //for (l = sel_list; l != NULL; l = l->next)
+      //RequestPickup_Cont((object_node *) (l->data));
+
+   //ObjectListDestroy(sel_list);
+      list_type number_items = NULL;  // List for NumberItem elements
+   list_type other_items = NULL;   // List for other elements
+
+   // Separate contents into number items and other items
+   for (l = contents; l != NULL; l = l->next)
+   {
+      if (IsNumberObj((object_node *)(l->data))) {
+         // This is a NumberItem
+         number_items = ObjectListAdd(number_items, (object_node *)(l->data));
+      } else {
+         // This is not a NumberItem
+         other_items = ObjectListAdd(other_items, (object_node *)(l->data));
+      }
+   }
+
+   // Sort the list of NumberItem alphabetically
+   number_items = ObjectListSortAlphabetically(number_items);
+
+   // Combine the sorted NumberItem list with the other items list
+   list_type merged_list = ConcatenateLists(number_items, other_items);
+
+   // Display the concatenated and sorted list in the listbox
+   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), merged_list, LD_MULTIPLESEL | LD_AMOUNTS | LD_SORT);
 
    for (l = sel_list; l != NULL; l = l->next)
-      RequestPickup_Cont((object_node *) (l->data));
+      RequestPickup_Cont((object_node *)(l->data));
 
+   // Cleanup: Destroy lists
    ObjectListDestroy(sel_list);
+   ObjectListDestroy(merged_list);
+   ObjectListDestroy(number_items);
+   ObjectListDestroy(other_items);
 }
 /************************************************************************/
 /*
