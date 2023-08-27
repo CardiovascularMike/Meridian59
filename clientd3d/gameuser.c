@@ -172,6 +172,7 @@ void GotObjectContents(ID object_id, list_type contents)
          number_items = list_add_item(number_items, (object_node *)(l->data));
       }
    }
+   number_items = InsertionSort(number_items, compare);
 
    // Display the concatenated and sorted list in the listbox
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS);
