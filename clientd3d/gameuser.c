@@ -147,35 +147,29 @@ void GotObjectContents(ID object_id, list_type contents)
 	 GameMessagePrintf(GetString(hInst, IDS_EMPTY), LookupNameRsc(r->obj.name_res));
       return;
    }
-
-   //sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), contents, LD_MULTIPLESEL | LD_AMOUNTS | LD_SORT);   
-
-   //for (l = sel_list; l != NULL; l = l->next)
-      //RequestPickup_Cont((object_node *) (l->data));
-
-   //ObjectListDestroy(sel_list);
-   list_type number_items = NULL;  // List for NumberItem elements
+   // Create list to grow in the loops for list box
+   list_type number_items = NULL;
 
    // Separate contents into number items and other items
+   // Separation by looping over objects twice
+   // This works as long as IsNumberObj returns a boolean
    for (l = contents; l != NULL; l = l->next)
    {
-    if (IsNumberObj(((object_node *)(l->data))->id)) {
-         // This is a NumberItem
+      if (IsNumberObj(((object_node *)(l->data))->id)) 
+      {
          number_items = list_add_item(number_items, (object_node *)(l->data));
-         }
+      }
    }
    for (l = contents; l != NULL; l = l->next)
    {
-      //obj = (object_node *)(l->data)
       if (!(IsNumberObj(((object_node *)(l->data))->id)))
       {
          number_items = list_add_item(number_items, (object_node *)(l->data));
       }
    }
-
-   // Display the concatenated and sorted list in the listbox
+   // Display the two-step grown list in the listbox
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS);
-
+   // Request pickup from container
    for (l = sel_list; l != NULL; l = l->next)
       RequestPickup_Cont((object_node *)(l->data));
 
