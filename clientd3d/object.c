@@ -44,7 +44,7 @@ Bool CompareIdRoomObject(void *idnum, void *obj)
 
 int CompareAlpha(void *id1, void *id2)
 {
-   return wcscmp(object1->id, object2->id);
+   return wcscmp(id1->id, id2->id);
 }
 
 /************************************************************************/
