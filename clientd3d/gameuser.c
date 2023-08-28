@@ -161,7 +161,7 @@ void GotObjectContents(ID object_id, list_type contents)
    {
     if (IsNumberObj(((object_node *)(l->data))->id)) {
          // This is a NumberItem
-         number_items = list_add_sorted_item(number_items, (object_node *)(l->data), CompareAlpha);
+         number_items = list_add_sorted_item(number_items, ((object_node *)(l->data)->id), CompareAlpha);
          }
    }
    for (l = contents; l != NULL; l = l->next)
@@ -169,7 +169,7 @@ void GotObjectContents(ID object_id, list_type contents)
       //obj = (object_node *)(l->data)
       if (!(IsNumberObj(((object_node *)(l->data))->id)))
       {
-         number_items = list_add_sorted_item(number_items, (object_node *)(l->data), CompareAlpha);
+         number_items = list_add_sorted_item(number_items, ((object_node *)(l->data)->id), CompareAlpha);
       }
    }
 
