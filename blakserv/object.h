@@ -35,7 +35,7 @@ void InitObject(void);
 void ResetObject(void);
 void ClearObject(void);
 int GetObjectsUsed(void);
-int CompareAlpha(int object_id, int object_id);
+int CompareAlpha(int object, int object);
 int CreateObject(int class_id,int num_parms,parm_node parms[]);
 Bool LoadObject(int object_id,char *class_name);
 void DeleteBlakodObject(int object_id);
