@@ -3693,8 +3693,8 @@ messages:
 
    UserGetCont(what=$,number=$)
    {
-      local oOldOwner, oSplit, iCan_hold;
-
+      local oOldOwner, oSplit, iCan_hold, iGot_All;
+      iGot_All = 1;
       oOldOwner = Send(what,@GetOwner);
 
       if oOldOwner <> $
@@ -3740,10 +3740,7 @@ messages:
             oSplit = Send(what,@Split,#number=number);
             if Send(what,@ReqNewOwner,#what=oSplit)
             {
-               Send(self,@MsgSendUser,#message_rsc=user_got_some,
-                     #parm1=Send(what,@GetName));
                Send(self,@NewHold,#what=oSplit);
-                  
                return;
             }
             else
@@ -3757,10 +3754,21 @@ messages:
             }
          }
       }
+      % Not a number item
       else
       {
-         Send(self,@NewHold,#what=what);
-         return;
+         if NOT Send(self,@ReqNewHold,#what=what)
+         {
+            Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                  #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
+            Send(self, @WaveSendUser, #what=self, 
+                  #wave_rsc = user_cant_pickup_item_wav_rsc);
+         }
+         else
+         {
+            Send(self,@NewHold,#what=what);
+            return;
+         }
       }
 
       return;
