@@ -42,7 +42,7 @@ Bool CompareIdRoomObject(void *idnum, void *obj)
    return GetObjId(reinterpret_cast<std::intptr_t>(idnum)) == GetObjId(((room_contents_node *) obj)->obj.id);
 }
 
-int CompareAlpha(void *id1, void *id2)
+int CompareAlpha(object *id1, object *id2)
 {
    return wcscmp(id1->id, id2->id);
 }
