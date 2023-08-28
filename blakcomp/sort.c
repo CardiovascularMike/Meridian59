@@ -15,10 +15,6 @@
 static list_type InsertionSort(list_type list, CompareProc compare);
 
 /************************************************************************/
-int CompareAlpha(void *object1 void *object2)
-{
-   return wcscmp(object1->id, object2->id);
-}
 int CompareParameters(void *param1, void *param2)
 {
    param_type p1 = (param_type) param1;
