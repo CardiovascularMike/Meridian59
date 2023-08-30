@@ -975,7 +975,7 @@ messages:
       if liClient_cmd = BP_REQ_GETCONT
       {
          oWhat = Nth(client_msg,2);
-         ilength_get_list - Nth(client_msg,3);
+         ilength_get_list = Nth(client_msg,3);
          Send(self,@UserGetCont,#what=oWhat,#number=number_stuff);
          if piGetContLoop = ilength_get_list
          {
