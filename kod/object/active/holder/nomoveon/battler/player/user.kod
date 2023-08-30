@@ -298,6 +298,7 @@ resources:
    user_safety_off_wav_rsc = safety_off.wav
 
    got_all_stuff = "You hastily grab everything that you need."
+   debugCont = "blah %s ..."
 
 classvars:
 
@@ -976,6 +977,7 @@ messages:
       {
          oWhat = Nth(client_msg,2);
          ilength_get_list = Nth(client_msg,3);
+         Send(self@MsgSendUser,#message_rsc=debugCont,#parm1=ilength_get_list);
          Send(self,@UserGetCont,#what=oWhat,#number=number_stuff);
          if piGetContLoop >= ilength_get_list
          {
