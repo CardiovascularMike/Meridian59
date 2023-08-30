@@ -173,6 +173,7 @@ void GotObjectContents(ID object_id, list_type contents)
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS);
    for (l = sel_list; l != NULL; l = l->next)
       bundles = bundles + 1;
+   GameMessage(GetString(hInst, bundles));
    // Request pickup from container
    for (l = sel_list; l != NULL; l = l->next)
       RequestPickup_Cont((object_node *)(l->data), bundles);
