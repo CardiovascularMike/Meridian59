@@ -291,10 +291,13 @@ resources:
    user_guild_rsc = "guild"
    user_guildofficer_rsc = "guildofficer"
 
+
    user_default_url = "http://www.Meridian59.com/"
    
    user_safety_on_wav_rsc = safety_on.wav
    user_safety_off_wav_rsc = safety_off.wav
+
+   got_all_stuff = "You hastily grab everything that you need."
 
 classvars:
 
@@ -349,6 +352,7 @@ properties:
    piMoveOldRoom = RID_TOS
 
    piCheaterLogs = 0
+   piGotAllStuff = 1
 
 messages:
 
@@ -3693,8 +3697,7 @@ messages:
 
    UserGetCont(what=$,number=$)
    {
-      local oOldOwner, oSplit, iCan_hold, iGot_All;
-      iGot_All = 1;
+      local oOldOwner, oSplit, iCan_hold;
       oOldOwner = Send(what,@GetOwner);
 
       if oOldOwner <> $
@@ -3712,7 +3715,7 @@ messages:
          Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
               #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
          Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
-              
+         piGotAllStuff = 0;   
          return;
       }
         
@@ -3721,6 +3724,7 @@ messages:
          iCan_hold = Send(self,@GetNumberCanHold,#what=What);
          if iCan_hold = 0
          {
+            piGotAllStuff = 0;
             return;
          }
          if iCan_hold < number
@@ -3731,7 +3735,7 @@ messages:
                   Send(self,@MsgSendUser,#message_rsc=user_got_some,
                        #parm1=Send(what,@GetName));
                   Send(self,@NewHold,#what=oSplit);
-                  
+                  piGotAllStuff = 0;
                   return;
                }
          }
@@ -3749,7 +3753,7 @@ messages:
                      #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
                Send(self, @WaveSendUser, #what=self, 
                      #wave_rsc = user_cant_pickup_item_wav_rsc);
-                       
+               piGotAllStuff = 0;
                return;
             }
          }
@@ -3763,6 +3767,7 @@ messages:
                   #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
             Send(self, @WaveSendUser, #what=self, 
                   #wave_rsc = user_cant_pickup_item_wav_rsc);
+            piGotAllStuff = 0;
          }
          else
          {
@@ -3770,7 +3775,17 @@ messages:
             return;
          }
       }
+      post(self,@GotAllStuff);
+      return;
+   }
 
+   GotAllStuff()
+   {
+      if piGotAllStuff = 1
+      {
+         Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
+      }
+      piGotAllStuff = 1;
       return;
    }
 
