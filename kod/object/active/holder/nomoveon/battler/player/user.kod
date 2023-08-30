@@ -3745,6 +3745,8 @@ messages:
             if Send(what,@ReqNewOwner,#what=oSplit)
             {
                Send(self,@NewHold,#what=oSplit);
+               piGotAllStuff = 1;
+               post(self,@GotAllStuff);
                return;
             }
             else
@@ -3772,10 +3774,12 @@ messages:
          else
          {
             Send(self,@NewHold,#what=what);
+            piGotAllStuff = 1;
+            post(self,@GotAllStuff);
             return;
          }
       }
-      post(self,@GotAllStuff);
+
       return;
    }
 
@@ -3785,7 +3789,7 @@ messages:
       {
          Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
       }
-      piGotAllStuff = 1;
+      piGotAllStuff = 2;
       return;
    }
 
