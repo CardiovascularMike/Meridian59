@@ -353,8 +353,8 @@ properties:
    piMoveOldRoom = RID_TOS
 
    piCheaterLogs = 0
-   piGetContLoop = 1
-   piSuccessGetContLoop = 1
+   piGetContLoop = 0
+   piSuccessGetContLoop = 0
 
 
 messages:
@@ -977,15 +977,7 @@ messages:
       {
          oWhat = Nth(client_msg,2);
          ilength_get_list = Nth(client_msg,3);
-         if ilength_get_list = 0
-         {
-            Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
-         }
-         while icounter < ilength_get_list
-         {
-            Send(self,@MsgSendUser,#message_rsc=debugCont);
-            icounter = icounter + 1;
-         }
+
          Send(self,@UserGetCont,#what=oWhat,#number=number_stuff);
          if piGetContLoop >= ilength_get_list
          {
@@ -993,8 +985,8 @@ messages:
             {
                Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
             }
-            piGetContLoop = 1;
-            piSuccessGetContLoop = 1;
+            piGetContLoop = 0;
+            piSuccessGetContLoop = 0;
          }
          return;
       }
