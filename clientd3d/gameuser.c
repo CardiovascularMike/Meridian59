@@ -170,7 +170,7 @@ void GotObjectContents(ID object_id, list_type contents)
    }
    // Display the two-step grown list in the listbox
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS);
-   bundles = sizeof(sel_list) / sizeof(sel_list[0]);
+   bundles = sizeof(sel_list);
    // Request pickup from container
    for (l = sel_list; l != NULL; l = l->next)
       RequestPickup_Cont((object_node *)(l->data), bundles);
