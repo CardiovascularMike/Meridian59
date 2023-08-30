@@ -977,6 +977,10 @@ messages:
       {
          oWhat = Nth(client_msg,2);
          ilength_get_list = Nth(client_msg,3);
+         if ilength_get_list = 0
+         {
+            Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
+         }
          while icounter < ilength_get_list
          {
             Send(self,@MsgSendUser,#message_rsc=debugCont);
