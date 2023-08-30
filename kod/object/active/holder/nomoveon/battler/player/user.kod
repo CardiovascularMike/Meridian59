@@ -985,6 +985,7 @@ messages:
             }
             piGetContLoop = 0;
             piSuccessGetContLoop = 0;
+            Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
          }
          return;
       }
