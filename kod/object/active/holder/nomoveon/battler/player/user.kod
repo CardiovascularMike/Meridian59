@@ -352,7 +352,9 @@ properties:
    piMoveOldRoom = RID_TOS
 
    piCheaterLogs = 0
-   piGotAllStuff = 1
+   piGetContLoop = 0
+   piSuccessGetContLoop = 0
+
 
 messages:
 
@@ -862,7 +864,7 @@ messages:
       local liClient_cmd, oWhat, oWhere, oRoom, iRow, iCol, iSay_type,
             sStr_said, sStr_mailed, lDest_mail, iAttack_type, iGroup, lItems,
             lUsers, oApply_on, iNid, sTitle, iAngle, sBody, iNum, iSpeed,
-            lTargets, bSpam, iPayload, iTarget;
+            lTargets, bSpam, iPayload, iTarget, ilength_get_list;
 
       bSpam = FALSE;
 
@@ -973,8 +975,17 @@ messages:
       if liClient_cmd = BP_REQ_GETCONT
       {
          oWhat = Nth(client_msg,2);
+         ilength_get_list - Nth(client_msg,3);
          Send(self,@UserGetCont,#what=oWhat,#number=number_stuff);
-
+         if piGetContLoop = ilength_get_list
+         {
+            if piSuccessGetContLoop = ilength_get_list
+            {
+               Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
+            }
+            piGetContLoop = 0;
+            piSuccessGetContLoop = 0;
+         }
          return;
       }
       if liClient_cmd = BP_REQ_DROP
@@ -3706,7 +3717,7 @@ messages:
          Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
               #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
          Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
-              
+         piGetContLoop = piGetContLoop + 1;                 
          return;
       }
 
@@ -3715,7 +3726,7 @@ messages:
          Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
               #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
          Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
-         piGotAllStuff = 0;   
+         piGetContLoop = piGetContLoop + 1;   
          return;
       }
         
@@ -3724,7 +3735,7 @@ messages:
          iCan_hold = Send(self,@GetNumberCanHold,#what=What);
          if iCan_hold = 0
          {
-            piGotAllStuff = 0;
+            piGetContLoop = piGetContLoop + 1;
             return;
          }
          if iCan_hold < number
@@ -3735,7 +3746,7 @@ messages:
                   Send(self,@MsgSendUser,#message_rsc=user_got_some,
                        #parm1=Send(what,@GetName));
                   Send(self,@NewHold,#what=oSplit);
-                  piGotAllStuff = 0;
+                  piGetContLoop = piGetContLoop + 1;
                   return;
                }
          }
@@ -3745,8 +3756,8 @@ messages:
             if Send(what,@ReqNewOwner,#what=oSplit)
             {
                Send(self,@NewHold,#what=oSplit);
-               piGotAllStuff = 1;
-               post(self,@GotAllStuff);
+               piGetContLoop = piGetContLoop + 1;
+               piSuccessGetContLoop = piSuccessGetContLoop + 1;
                return;
             }
             else
@@ -3755,7 +3766,7 @@ messages:
                      #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
                Send(self, @WaveSendUser, #what=self, 
                      #wave_rsc = user_cant_pickup_item_wav_rsc);
-               piGotAllStuff = 0;
+               piGetContLoop = piGetContLoop + 1;
                return;
             }
          }
@@ -3769,27 +3780,17 @@ messages:
                   #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
             Send(self, @WaveSendUser, #what=self, 
                   #wave_rsc = user_cant_pickup_item_wav_rsc);
-            piGotAllStuff = 0;
+            piGetContLoop = piGetContLoop + 1;
          }
          else
          {
             Send(self,@NewHold,#what=what);
-            piGotAllStuff = 1;
-            post(self,@GotAllStuff);
+            piGetContLoop = piGetContLoop + 1;
+            piSuccessGetContLoop = piSuccessGetcontLoop + 1;
             return;
          }
       }
 
-      return;
-   }
-
-   GotAllStuff()
-   {
-      if piGotAllStuff = 1
-      {
-         Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
-      }
-      piGotAllStuff = 2;
       return;
    }
 
