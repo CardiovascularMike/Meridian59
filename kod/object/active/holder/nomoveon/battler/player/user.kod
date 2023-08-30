@@ -298,7 +298,7 @@ resources:
    user_safety_off_wav_rsc = safety_off.wav
 
    got_all_stuff = "You hastily grab everything that you need."
-   debugCont = "blah %s ..."
+   debugCont = "blah ..."
 
 classvars:
 
@@ -865,8 +865,8 @@ messages:
       local liClient_cmd, oWhat, oWhere, oRoom, iRow, iCol, iSay_type,
             sStr_said, sStr_mailed, lDest_mail, iAttack_type, iGroup, lItems,
             lUsers, oApply_on, iNid, sTitle, iAngle, sBody, iNum, iSpeed,
-            lTargets, bSpam, iPayload, iTarget, ilength_get_list;
-
+            lTargets, bSpam, iPayload, iTarget, ilength_get_list, icounter;
+      icounter = 0;
       bSpam = FALSE;
 
       % This checks to see if the user is trying to Send too many packets
@@ -977,7 +977,11 @@ messages:
       {
          oWhat = Nth(client_msg,2);
          ilength_get_list = Nth(client_msg,3);
-         Send(self@MsgSendUser,#message_rsc=debugCont,#parm1=ilength_get_list);
+         while icounter < ilength_get_list
+         {
+            Send(self,@MsgSendUser,#message_rsc=debugCont);
+            icounter = icounter + 1;
+         }
          Send(self,@UserGetCont,#what=oWhat,#number=number_stuff);
          if piGetContLoop >= ilength_get_list
          {
