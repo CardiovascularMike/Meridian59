@@ -136,9 +136,9 @@ void UserPickup(void)
  */
 void GotObjectContents(ID object_id, list_type contents)
 {
-   list_type sel_list, l;
+   list_type sel_list, l, selection;
    room_contents_node *r;
-
+   selection = NULL;
    r = GetRoomObjectById(object_id);
 
    if (contents == NULL)
@@ -169,9 +169,10 @@ void GotObjectContents(ID object_id, list_type contents)
    }
    // Display the two-step grown list in the listbox
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS);
-
+   for (l = sel_list; l != NULL; l = l->next)
+      selection = list_add_item(selection, (object_node *)(l->data))
    // Request pickup from container
-   RequestPickup_Cont(sel_list);
+   RequestPickup_Cont(selection);
 
    // Cleanup: Destroy lists
    ObjectListDestroy(sel_list);
