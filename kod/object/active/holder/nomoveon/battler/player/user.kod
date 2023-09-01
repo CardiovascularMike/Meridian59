@@ -3698,7 +3698,7 @@ messages:
       return;
    }
 
-   UserGetCont(item_list=$, numbers_list=$)
+   UserGetCont(items_list=$, numbers_list=$)
    {
       local oOldOwner, oSplit, iCan_hold, oitem, iCantGet, number;
       iCantGet = 0;
