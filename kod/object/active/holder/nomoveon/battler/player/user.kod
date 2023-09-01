@@ -3722,7 +3722,7 @@ messages:
             Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
                #parm1=Send(oitem,@GetDef),#parm2=Send(oitem,@GetName));
             Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
-            jiCantGet = 1;
+            iCantGet = 1;
          }
          
          if IsClass(oitem,&NumberItem)
