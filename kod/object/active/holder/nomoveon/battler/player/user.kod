@@ -975,19 +975,9 @@ messages:
       }
       if liClient_cmd = BP_REQ_GETCONT
       {
-         oWhat = Nth(client_msg,2);
-         ilength_get_list = Nth(client_msg,3);
-
-         Send(self,@UserGetCont,#what=oWhat,#number=number_stuff);
-         if piGetContLoop >= ilength_get_list
-         {
-            if piSuccessGetContLoop >= ilength_get_list
-            {
-               Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
-            }
-            piGetContLoop = 0;
-            piSuccessGetContLoop = 0;
-         }
+         lItems = Nth(client_msg,2);
+         Send(self,@UserGetCont,#item_list=lItems,#numbers_list=number_stuff);
+         
          return;
       }
       if liClient_cmd = BP_REQ_DROP
@@ -3708,92 +3698,96 @@ messages:
       return;
    }
 
-   UserGetCont(what=$,number=$)
+   UserGetCont(item_list=$, numbers_list=$)
    {
-      local oOldOwner, oSplit, iCan_hold;
-      oOldOwner = Send(what,@GetOwner);
+      local oOldOwner, oSplit, iCan_hold, oitem, iCantGet, number;
+      iCantGet = 0;
+      for oitem in items_list
+      {
+         
+         number = First(numbers_list);
+         oOldOwner = Send(oitem,@GetOwner);
 
-      if oOldOwner <> $
-         AND NOT Send(oOldOwner,@ReqTaker,#what=what,#taker=self)
-      {
-         Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
-              #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
-         Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
-         piGetContLoop = piGetContLoop + 1;                 
-         return;
-      }
+         if oOldOwner <> $
+            AND NOT Send(oOldOwner,@ReqTaker,#what=oitem,#taker=self)
+         {
+            Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+               #parm1=Send(oitem,@GetDef),#parm2=Send(oitem,@GetName));
+            Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
+            iCantGet = 1;
+         }
 
-      if NOT Send(what,@ReqNewOwner,#what=self)
-      {
-         Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
-              #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
-         Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
-         piGetContLoop = piGetContLoop + 1;   
-         return;
-      }
-        
-      if IsClass(what,&NumberItem)
-      {
-         iCan_hold = Send(self,@GetNumberCanHold,#what=What);
-         if iCan_hold = 0
+         if NOT Send(oitem,@ReqNewOwner,#what=self)
          {
-            piGetContLoop = piGetContLoop + 1;
-            return;
+            Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+               #parm1=Send(oitem,@GetDef),#parm2=Send(oitem,@GetName));
+            Send(self, @WaveSendUser, #what=self, #wave_rsc = user_cant_pickup_item_wav_rsc);
+            jiCantGet = 1;
          }
-         if iCan_hold < number
+         
+         if IsClass(oitem,&NumberItem)
          {
-            oSplit = Send(what,@Split,#number=iCan_hold);
-               if Send(what,@ReqNewOwner,#what=oSplit)
-               {
-                  Send(self,@MsgSendUser,#message_rsc=user_got_some,
-                       #parm1=Send(what,@GetName));
-                  Send(self,@NewHold,#what=oSplit);
-                  piGetContLoop = piGetContLoop + 1;
-                  return;
-               }
-         }
-         else
-         {
-            oSplit = Send(what,@Split,#number=number);
-            if Send(what,@ReqNewOwner,#what=oSplit)
+            iCan_hold = Send(self,@GetNumberCanHold,#what=oitem);
+            if iCan_hold = 0
             {
-               Send(self,@NewHold,#what=oSplit);
-               piGetContLoop = piGetContLoop + 1;
-               piSuccessGetContLoop = piSuccessGetContLoop + 1;
-               return;
+               Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                     #parm1=Send(oitem,@GetDef),#parm2=Send(oitem,@GetName));
+               Send(self, @WaveSendUser, #what=self, 
+                     #wave_rsc = user_cant_pickup_item_wav_rsc);
+               iCantGet = 1;
+            }
+            if iCan_hold < number
+            {
+               oSplit = Send(oitem,@Split,#number=iCan_hold);
+                  if Send(oitem,@ReqNewOwner,#what=oSplit)
+                  {
+                     Send(self,@MsgSendUser,#message_rsc=user_got_some,
+                        #parm1=Send(oitem,@GetName));
+                     Send(self,@NewHold,#what=oSplit);
+                     iCantGet = 1;
+                  }
             }
             else
             {
-               Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
-                     #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
-               Send(self, @WaveSendUser, #what=self, 
-                     #wave_rsc = user_cant_pickup_item_wav_rsc);
-               piGetContLoop = piGetContLoop + 1;
-               return;
+               oSplit = Send(oitem,@Split,#number=number);
+               if Send(oitem,@ReqNewOwner,#what=oSplit)
+               {
+                  Send(self,@NewHold,#what=oSplit);
+               }
+               else
+               {
+                  Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                        #parm1=Send(oitem,@GetDef),#parm2=Send(oitem,@GetName));
+                  Send(self, @WaveSendUser, #what=self, 
+                        #wave_rsc = user_cant_pickup_item_wav_rsc);
+                  iCantGet = 1;
+               }
             }
          }
-      }
-      % Not a number item
-      else
-      {
-         if NOT Send(self,@ReqNewHold,#what=what)
-         {
-            Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
-                  #parm1=Send(what,@GetDef),#parm2=Send(what,@GetName));
-            Send(self, @WaveSendUser, #what=self, 
-                  #wave_rsc = user_cant_pickup_item_wav_rsc);
-            piGetContLoop = piGetContLoop + 1;
-         }
+         % Not a number item
          else
          {
-            Send(self,@NewHold,#what=what);
-            piGetContLoop = piGetContLoop + 1;
-            piSuccessGetContLoop = piSuccessGetcontLoop + 1;
-            return;
+            if NOT Send(self,@ReqNewHold,#what=oitem)
+            {
+               Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                     #parm1=Send(oitem,@GetDef),#parm2=Send(oitem,@GetName));
+               Send(self, @WaveSendUser, #what=self, 
+                     #wave_rsc = user_cant_pickup_item_wav_rsc);
+               iCantGet = 1;
+            }
+            else
+            {
+               Send(self,@NewHold,#what=oitem);
+            }
          }
-      }
 
-      return;
+         numbers_list = Rest(numbers_list);
+      }
+   if iCantGet = 0
+   {
+      Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
+   }
+   return;
    }
 
    UserBlockedSend(what = $)

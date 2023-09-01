@@ -138,8 +138,6 @@ void GotObjectContents(ID object_id, list_type contents)
 {
    list_type sel_list, l;
    room_contents_node *r;
-   int bundles;
-   bundles = 0;
 
    r = GetRoomObjectById(object_id);
 
@@ -172,14 +170,10 @@ void GotObjectContents(ID object_id, list_type contents)
    // Display the two-step grown list in the listbox
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS);
 
-   for (l = sel_list; l != NULL; l = l->next)
-      bundles = bundles + 1;
    // Request pickup from container
-   for (l = sel_list; l != NULL; l = l->next)
-      RequestPickup_Cont(((object_node *)(l->data)), bundles);
+   RequestPickup_Cont(sel_list);
 
    // Cleanup: Destroy lists
-   bundles = 0;
    ObjectListDestroy(sel_list);
    ObjectListDestroy(number_items);
 }
