@@ -976,7 +976,7 @@ messages:
       if liClient_cmd = BP_REQ_GETCONT
       {
          lItems = Nth(client_msg,2);
-         Send(self,@UserGetCont,#item_list=lItems,#numbers_list=number_stuff);
+         Send(self,@UserGetCont,#items_list=lItems,#numbers_list=number_stuff);
          
          return;
       }
@@ -3698,7 +3698,7 @@ messages:
       return;
    }
 
-   UserGetCont(item_list=$, numbers_list=$)
+   UserGetCont(items_list=$, numbers_list=$)
    {
       local oOldOwner, oSplit, iCan_hold, oitem, iCantGet, number;
       iCantGet = 0;
