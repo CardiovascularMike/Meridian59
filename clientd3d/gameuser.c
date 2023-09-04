@@ -170,8 +170,9 @@ void GotObjectContents(ID object_id, list_type contents)
    // Display the two-step grown list in the listbox
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS);
 
-   // Request pickup from container
-   RequestPickup_Cont(sel_list);
+   // Request pickup from container if any items are selected
+   if (list_length(sel_list) > 0)
+      RequestPickup_Cont(sel_list);
 
    // Cleanup: Destroy lists
    ObjectListDestroy(sel_list);
