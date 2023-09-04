@@ -3728,17 +3728,19 @@ messages:
          if IsClass(oitem,&NumberItem)
          {
             iCan_hold = Send(self,@GetNumberCanHold,#what=oitem);
-            if iCan_hold = 0
-            {
-               Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
-                     #parm1=Send(oitem,@GetDef),#parm2=Send(oitem,@GetName));
-               Send(self, @WaveSendUser, #what=self, 
-                     #wave_rsc = user_cant_pickup_item_wav_rsc);
-               iCantGet = 1;
-            }
             if iCan_hold < number
             {
-               oSplit = Send(oitem,@Split,#number=iCan_hold);
+               if iCan_hold = 0
+               {
+                  Send(self,@MsgSendUser,#message_rsc=user_disallow_get,
+                        #parm1=Send(oitem,@GetDef),#parm2=Send(oitem,@GetName));
+                  Send(self, @WaveSendUser, #what=self, 
+                        #wave_rsc = user_cant_pickup_item_wav_rsc);
+                  iCantGet = 1;
+                }
+               else
+               {
+                  oSplit = Send(oitem,@Split,#number=iCan_hold);
                   if Send(oitem,@ReqNewOwner,#what=oSplit)
                   {
                      Send(self,@MsgSendUser,#message_rsc=user_got_some,
@@ -3746,7 +3748,9 @@ messages:
                      Send(self,@NewHold,#what=oSplit);
                      iCantGet = 1;
                   }
+               }
             }
+            % iCan_hold > number
             else
             {
                oSplit = Send(oitem,@Split,#number=number);
@@ -3780,14 +3784,15 @@ messages:
                Send(self,@NewHold,#what=oitem);
             }
          }
-
+         % Move down the list of numbers
          numbers_list = Rest(numbers_list);
       }
-   if iCantGet = 0
-   {
-      Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
-   }
-   return;
+      if iCantGet = 0
+      {
+         Send(self,@MsgSendUser,#message_rsc=got_all_stuff);
+      }
+      
+      return;
    }
 
    UserBlockedSend(what = $)
