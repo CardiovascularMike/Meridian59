@@ -136,9 +136,12 @@ void UserPickup(void)
  */
 void GotObjectContents(ID object_id, list_type contents)
 {
-   list_type sel_list, l, selection;
+   list_type sel_list, l, selection, splitlist;
    room_contents_node *r;
    selection = NULL;
+   //splitlist is a list of items with numberitems first
+   //followed by all other items
+   splitlist = NULL;
    r = GetRoomObjectById(object_id);
 
    if (contents == NULL)
@@ -147,28 +150,25 @@ void GotObjectContents(ID object_id, list_type contents)
 	 GameMessagePrintf(GetString(hInst, IDS_EMPTY), LookupNameRsc(r->obj.name_res));
       return;
    }
-   // Create list to grow in the loops for list box
-   list_type number_items = NULL;
-
    // Separate contents into number items and other items
    // Separation by looping over objects twice
-   // This works as long as IsNumberObj returns a boolean
+   // This may be better than concatenating two lists using a single loop
    for (l = contents; l != NULL; l = l->next)
    {
       if (IsNumberObj(((object_node *)(l->data))->id)) 
       {
-         number_items = list_add_item(number_items, (object_node *)(l->data));
+         splitlist = list_add_item(splitlist, (object_node *)(l->data));
       }
    }
    for (l = contents; l != NULL; l = l->next)
    {
       if (!(IsNumberObj(((object_node *)(l->data))->id)))
       {
-         number_items = list_add_item(number_items, (object_node *)(l->data));
+         splitlist = list_add_item(splitlist, (object_node *)(l->data));
       }
    }
    // Display the two-step grown list in the listbox
-   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), number_items, LD_MULTIPLESEL | LD_AMOUNTS);
+   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), splitlist, LD_MULTIPLESEL | LD_AMOUNTS);
 
    // Request pickup from container if any items are selected
    if (list_length(sel_list) > 0)
@@ -176,7 +176,7 @@ void GotObjectContents(ID object_id, list_type contents)
 
    // Cleanup: Destroy lists
    ObjectListDestroy(sel_list);
-   ObjectListDestroy(number_items);
+   ObjectListDestroy(splitlist);
 
 }
 /************************************************************************/
