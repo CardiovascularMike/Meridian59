@@ -171,6 +171,7 @@ void GotObjectContents(ID object_id, list_type contents)
    sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), splitlist, LD_MULTIPLESEL | LD_AMOUNTS);
 
    // Request pickup from container if any items are selected
+   // Need this check so we don't send a success message if user hits OK but selected no items
    if (list_length(sel_list) > 0)
       RequestPickup_Cont(sel_list);
 
