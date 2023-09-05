@@ -57,9 +57,12 @@ int CompareObjectNameRsc(void *obj1, void *obj2)
     object_node *node1 = (object_node *)obj1;
     object_node *node2 = (object_node *)obj2;
 
+    const char *string1;
+    const char *string2;
+    
     //Get string1 and string2
-    string1 = LookupNameRsc(info->node1->name_res);
-    string2 = LookupNameRsc(info->node2->name_res);
+    string1 = LookupNameRsc(node1->name_res);
+    string2 = LookupNameRsc(node2->name_res);
 
     // Use stricmp to compare the name_res strings case-insensitively
     return stricmp(string1, string2);
