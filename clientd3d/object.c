@@ -53,7 +53,12 @@ int CompareRoomObjectDistance(void *r1, void *r2)
 
 int CompareObjectNameRsc(void *obj1, void *obj2)
 {
-   return stricmp((((object_node *)(obj1->data))->name_res), (((object_node *)(obj2->data))->name_res));
+    // Cast obj1 and obj2 to the correct type (assuming object_node*)
+    object_node *node1 = (object_node *)obj1;
+    object_node *node2 = (object_node *)obj2;
+
+    // Use stricmp to compare the name_res strings case-insensitively
+    return stricmp(node1->name_res, node2->name_res);
 }
 /*****************************************************************************/
 /*
