@@ -136,12 +136,13 @@ void UserPickup(void)
  */
 void GotObjectContents(ID object_id, list_type contents)
 {
-   list_type sel_list, l, selection, splitlist;
+   list_type sel_list, l, selection, stacklist, unstacklist;
    room_contents_node *r;
    selection = NULL;
    //splitlist is a list of items with numberitems first
    //followed by all other items
-   splitlist = NULL;
+   stacklist = NULL;
+   unstacklist = NULL;
    r = GetRoomObjectById(object_id);
 
    if (contents == NULL)
@@ -157,18 +158,20 @@ void GotObjectContents(ID object_id, list_type contents)
    {
       if (IsNumberObj(((object_node *)(l->data))->id)) 
       {
-         splitlist = list_add_sorted_item(splitlist, (object_node *)(l->data), CompareObjectNameRsc);
+         stacklist = list_add_sorted_item(stacklist, (object_node *)(l->data), CompareObjectNameRsc);
       }
    }
    for (l = contents; l != NULL; l = l->next)
    {
       if (!(IsNumberObj(((object_node *)(l->data))->id)))
       {
-         splitlist = list_add_sorted_item(splitlist, (object_node *)(l->data), CompareObjectNameRsc);
+         unstacklist = list_add_sorted_item(unstacklist, (object_node *)(l->data), CompareObjectNameRsc);
       }
    }
+   //Concat the two lists into one
+   stacklist = list_append(stacklist, unstacklist);
    // Display the two-step grown list in the listbox
-   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), splitlist, LD_MULTIPLESEL | LD_AMOUNTS);
+   sel_list = DisplayLookList(hMain, GetString(hInst, IDS_GET), stacklist, LD_MULTIPLESEL | LD_AMOUNTS);
 
    // Request pickup from container if any items are selected
    // Need this check so we don't send a success message if user hits OK but selected no items
@@ -177,7 +180,8 @@ void GotObjectContents(ID object_id, list_type contents)
 
    // Cleanup: Destroy lists
    ObjectListDestroy(sel_list);
-   ObjectListDestroy(splitlist);
+   ObjectListDestroy(stacklist);
+   ObjectListDestroy(unstacklist);
 
 }
 /************************************************************************/
