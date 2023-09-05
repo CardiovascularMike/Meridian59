@@ -157,14 +157,14 @@ void GotObjectContents(ID object_id, list_type contents)
    {
       if (IsNumberObj(((object_node *)(l->data))->id)) 
       {
-         splitlist = list_add_item(splitlist, (object_node *)(l->data));
+         splitlist = list_add_sorted_item(splitlist, (object_node *)(l->data), CompareObjectNameRsc);
       }
    }
    for (l = contents; l != NULL; l = l->next)
    {
       if (!(IsNumberObj(((object_node *)(l->data))->id)))
       {
-         splitlist = list_add_item(splitlist, (object_node *)(l->data));
+         splitlist = list_add_sorted_item(splitlist, (object_node *)(l->data), CompareObjectNameRsc);
       }
    }
    // Display the two-step grown list in the listbox

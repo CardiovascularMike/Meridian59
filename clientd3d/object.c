@@ -50,6 +50,11 @@ int CompareRoomObjectDistance(void *r1, void *r2)
 {
    return ((room_contents_node *) r1)->distance - ((room_contents_node *) r2)->distance;
 }
+
+int CompareObjectNameRsc(void *obj1, void *obj2)
+{
+   return stricmp((((object_node *)(obj1->data))->name_res), (((object_node *)(obj2->data))->name_res));
+}
 /*****************************************************************************/
 /*
  * OverlayListDestroy:  Free memory associated with a list of overlays, and return NULL.
