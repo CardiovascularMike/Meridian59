@@ -11781,7 +11781,7 @@ messages:
       
       for i in plUsing
       {
-         if IsClass(i,&shirt)
+         if IsClass(i,&Shirt)
          {
             Send(self,@MsgSendUser,#message_rsc=TanktopTesterMessage);
             return Send(i,@GetPaletteTranslation);
