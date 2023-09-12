@@ -712,6 +712,7 @@ resources:
 
    player_logged_on_wav_rsc = player_login_or_out.wav
    player_logged_off_wav_rsc = player_logout2.wav
+   TanktopTesterMessage = "Does It Work With Tanktops?"
    
 classvars:
 
@@ -11782,6 +11783,7 @@ messages:
       {
          if IsClass(i,&shirt)
          {
+            Send(self,@MsgSendUser,#message_rsc=TanktopTesterMessage);
             return Send(i,@GetPaletteTranslation);
          }
       }
