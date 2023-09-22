@@ -51,7 +51,7 @@ classvars:
 
 properties:
 
-   % Do we need to Send removeenchantment to every user in the room on
+   % Do we need to Send RemoveEnchantment to every user in the room on
    %  spell termination?
    pbUserEffects = FALSE  
 
@@ -103,7 +103,7 @@ messages:
    CastSpell(who=$, iSpellPower=0)
    "Initiation point for the spell."
    {
-      local oRoom, oldVolume, thisVolume, i, iJalaInfo;
+      local oRoom, oldVolume, oOldSpell, thisVolume, i, iJalaInfo;
 
       oRoom = Send(who,@GetOwner);
 
@@ -112,6 +112,8 @@ messages:
 
       if iJalaInfo <> $
       {
+         % Get and save old spell
+         oOldSpell = Nth(lJalaInfo,2);
          % Our state information is the third item return from JalaInfo
          oldVolume = Nth(Nth(iJalaInfo,3),1);
       }
@@ -129,6 +131,11 @@ messages:
       }
       else
       {
+         if oOldSpell <> $
+         {
+            Send(oRoom,@RemoveEnchantment,#what=oOldSpell,#report=TRUE);
+         }
+         
          Send(oRoom,@RoomStartEnchantment,#what=self,
               #state=Send(self,@BuildState,#thisVolume=thisVolume,#who=who,
                           #iSpellPower=iSpellPower),
