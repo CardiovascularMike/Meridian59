@@ -113,7 +113,7 @@ messages:
       if iJalaInfo <> $
       {
          % Get and save old spell
-         oOldSpell = Nth(lJalaInfo,2);
+         oOldSpell = Nth(iJalaInfo,2);
          % Our state information is the third item return from JalaInfo
          oldVolume = Nth(Nth(iJalaInfo,3),1);
       }
@@ -135,7 +135,7 @@ messages:
          {
             Send(oRoom,@RemoveEnchantment,#what=oOldSpell,#report=TRUE);
          }
-         
+
          Send(oRoom,@RoomStartEnchantment,#what=self,
               #state=Send(self,@BuildState,#thisVolume=thisVolume,#who=who,
                           #iSpellPower=iSpellPower),
