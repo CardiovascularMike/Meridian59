@@ -3326,7 +3326,7 @@ messages:
 
    MidiSendUser(midi_rsc = $)
    {
-      if (pbLogged_on)
+      if (midi_rsc <> $) AND (pbLogged_on)
       {
          AddPacket(1,BP_PLAY_MIDI);
          if midi_rsc = $
