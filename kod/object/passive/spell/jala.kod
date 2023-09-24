@@ -103,19 +103,19 @@ messages:
    CastSpell(who=$, iSpellPower=0)
    "Initiation point for the spell."
    {
-      local oRoom, oldVolume, oOldSpell, thisVolume, i, iJalaInfo;
+      local oRoom, oldVolume, oOldSpell, thisVolume, i, lJalaInfo;
 
       oRoom = Send(who,@GetOwner);
 
-      iJalaInfo = Send(oRoom,@GetJalaInfo);
+      lJalaInfo = Send(oRoom,@GetJalaInfo);
       oldVolume = 0;
 
-      if iJalaInfo <> $
+      if lJalaInfo <> $
       {
          % Get and save old spell
-         oOldSpell = Nth(iJalaInfo,2);
+         oOldSpell = Nth(lJalaInfo,2);
          % Our state information is the third item return from JalaInfo
-         oldVolume = Nth(Nth(iJalaInfo,3),1);
+         oldVolume = Nth(Nth(lJalaInfo,3),1);
       }
 
       thisVolume = Send(self,@CalculateVolume,#who=who,
@@ -299,7 +299,7 @@ messages:
 
    StartMusic(oCaster=$, rMusic=$)
    {
-      local oRoom, i;
+      local oRoom, i, music_rsc;
       
       if oCaster = $
       {
@@ -309,11 +309,12 @@ messages:
       }
 
       oRoom = Send(oCaster,@GetOwner);
+      music_rsc = Send(oRoom,@GetMusic);
       for i in Send(oRoom,@GetHolderActive)
       {
          if IsClass(first(i),&user)
          {
-            Send(first(i),@MidiSendUser,#midi_rsc=rMusic);
+            Send(first(i),@SendRoomMusic,#music_rsc=music_rsc);
          }
       }
       
