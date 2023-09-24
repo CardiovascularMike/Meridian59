@@ -3340,6 +3340,12 @@ messages:
          
          SendPacket(poSession);
       }
+      if midi_rsc = $
+      {
+         AddPacket(1,BP_PLAY_MIDI);
+         AddPacket(4,0);
+         SendPacket(poSession);
+      }
       
       return;
    }      
