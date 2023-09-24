@@ -727,6 +727,11 @@ messages:
       return viTeleport_angle;
    }
 
+   GetMusic()
+   {
+      return prMusic;
+   }
+
    IsHometown()
    {
       return Send(self,@CheckRoomFlag,#flag=ROOM_HOMETOWN);
