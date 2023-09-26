@@ -307,9 +307,12 @@ messages:
 
          return FALSE;
       }
-
-      oRoom = Send(oCaster,@GetOwner);
-      music_rsc = Send(oRoom,@GetMusic);
+      if rMusic = $
+      {
+         oRoom = Send(oCaster,@GetOwner);
+         music_rsc = Send(oRoom,@GetMusic);
+         rMusic = music_rsc
+      }
       for i in Send(oRoom,@GetHolderActive)
       {
          if IsClass(first(i),&user)
