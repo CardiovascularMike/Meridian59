@@ -314,7 +314,7 @@ messages:
       {
          if IsClass(first(i),&user)
          {
-            Send(first(i),@SendRoomMusic,#music_rsc=music_rsc);
+            Send(first(i),@MidiSendUser,#midi_rsc=rMusic);
          }
       }
       
