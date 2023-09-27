@@ -729,6 +729,7 @@ messages:
 
    GetMusic()
    {
+      debug("GetMusic Worked")
       return prMusic;
    }
 

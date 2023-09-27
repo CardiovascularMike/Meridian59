@@ -299,7 +299,7 @@ messages:
 
    StartMusic(oCaster=$, rMusic=$)
    {
-      local oRoom, i, music_rsc;
+      local oRoom, i;
       
       if oCaster = $
       {
@@ -310,17 +310,25 @@ messages:
       if rMusic = $
       {
          oRoom = Send(oCaster,@GetOwner);
-         music_rsc = Send(oRoom,@GetMusic);
-         rMusic = music_rsc
-      }
-      for i in Send(oRoom,@GetHolderActive)
-      {
-         if IsClass(first(i),&user)
+         rMusic = Send(oRoom,@GetMusic);
+         for i in Send(oRoom,@GetHolderActive)
          {
-            Send(first(i),@MidiSendUser,#midi_rsc=rMusic);
+            if IsClass(first(i),&user)
+            {
+               Send(first(i),@MidiSendUser,#midi_rsc=rMusic);
+            }
          }
       }
-      
+      else
+      {
+         for i in Send(oRoom,@GetHolderActive)
+         {
+            if IsClass(first(i),&user)
+            {
+               Send(first(i),@MidiSendUser,#midi_rsc=rMusic);
+            }
+         }
+      }
       return;
    }
 
