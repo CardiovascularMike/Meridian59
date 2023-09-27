@@ -27,7 +27,7 @@ resources:
 
    Mirth_on = "%s%s's mirthful song lifts your spirits a bit."
 
-   Mirth_song = main.mid
+   Mirth_song = Jala2.mid
  
 classvars:
 
@@ -50,7 +50,7 @@ classvars:
 
 properties:
 
-   prMusic = Jala2
+   prMusic = Mirth_song
    pbUserEffects = TRUE
       
 messages:
