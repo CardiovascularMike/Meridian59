@@ -3326,7 +3326,7 @@ messages:
 
    MidiSendUser(midi_rsc = $)
    {
-      if (pbLogged_on)
+      if pbLogged_on
       {
          AddPacket(1,BP_PLAY_MIDI);
          if midi_rsc = $
@@ -3337,7 +3337,7 @@ messages:
          {
             AddPacket(4,midi_rsc);
          }
-         
+         debug("midi send got to user.")
          SendPacket(poSession);
       }
             
