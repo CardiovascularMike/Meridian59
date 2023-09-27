@@ -3337,7 +3337,7 @@ messages:
          {
             AddPacket(4,midi_rsc);
          }
-         debug("midi send got to user.")
+         debug("midi send got to user.");
          SendPacket(poSession);
       }
             

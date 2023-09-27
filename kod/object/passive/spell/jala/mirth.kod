@@ -50,7 +50,7 @@ classvars:
 
 properties:
 
-   prMusic = Mirth_song
+   prMusic = jala2.mid
    pbUserEffects = TRUE
       
 messages:
