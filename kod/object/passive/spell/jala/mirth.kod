@@ -50,7 +50,7 @@ classvars:
 
 properties:
 
-   prMusic = Jala2.mid
+   prMusic = Jala2
    pbUserEffects = TRUE
       
 messages:
