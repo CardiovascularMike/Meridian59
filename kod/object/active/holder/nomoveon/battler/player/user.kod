@@ -2906,7 +2906,7 @@ messages:
       %  the delta, since people could just be moving from rest.
       iCurrentTime = GetTime();
       iDelta = iCurrentTime - piLastMoveUpdateTime;
-      iDelta = iDelta * 2
+      iDelta = iDelta * 2;
       %  Make sure this person is not lagging; increment our counter since we
       %  got a move packet, then adjust for last movement time.
       %  Also make sure we don't go too far negative.
