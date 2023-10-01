@@ -28,6 +28,9 @@ constants:
    GOOD_COLOR = 82
    BAD_COLOR =  83
 
+   % This should equal MOVE_INTERVAL in Move.C
+   MOVE_INTERVAL = 250
+
    % How much wait between suicides?  Curently 10 minutes.
    SUICIDE_REPEAT_TIME = 600 
 
@@ -55,10 +58,10 @@ constants:
 
    % What's the greatest time between moves that we'll consider to be "lag"
    %  (in seconds).
-   MOVEMENT_DELTA_LAG_THRESHOLD = 5
+   MOVEMENT_DELTA_LAG_THRESHOLD = 20
 
    % If piMovesCount goes over this, we have a suspected speedhacker.
-   MOVEMENT_COUNT_THRESHOLD = 6
+   MOVEMENT_COUNT_THRESHOLD = 2
 
    % Speedhack/cheating detection:
    % What's the maximum number of times we should log a violation?
@@ -2906,7 +2909,7 @@ messages:
       %  the delta, since people could just be moving from rest.
       iCurrentTime = GetTime();
       iDelta = iCurrentTime - piLastMoveUpdateTime;
-      iDelta = iDelta * 10;
+      iDelta = iDelta * (1000/MOVE_INTERVAL);
       %  Make sure this person is not lagging; increment our counter since we
       %  got a move packet, then adjust for last movement time.
       %  Also make sure we don't go too far negative.
