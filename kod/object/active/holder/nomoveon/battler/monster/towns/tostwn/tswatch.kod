@@ -2019,6 +2019,35 @@ messages:
 
    ReqSomethingAttack(what=$,victim=$)
    {
+      % if a fight isnt in session, attack fails.
+      if NOT Send(self,@FightInSession)
+      {
+         return FALSE;
+      }
+
+      % if the victim is not a combatant, attack fails.
+      if IsClass(victim,&Player)
+         AND NOT Send(self,@IsCombatant,#who=victim)
+      {
+         return FALSE;
+      }
+      % if the attacker is a reflection or evil twin check if poOriginal is a combatant.
+      if IsClass(what,&Reflection)
+         OR IsClass(what,&EvilTwin)
+      {
+         oOriginal = Send(what,@GetIllusionForm);
+
+         if Send(self,@IsCombatant,#who=oOriginal)
+         {
+            return TRUE;
+         }
+      }
+      % if the attacker is not a combatant, attack fails.
+      if NOT Send(self,@IsCombatant,#who=what)
+      {
+         return FALSE;
+      }
+
       % Targetless spells
       if victim = $
       {
@@ -2057,8 +2086,8 @@ messages:
       }
 
       % Spells with targets = all the rest of them     
-      if (NOT Send(self,@isCombatant,#who=what)
-         OR NOT Send(self,@isCombatant,#who=victim))
+      if (NOT Send(self,@IsCombatant,#who=what)
+         OR NOT Send(self,@IsCombatant,#who=victim))
          AND IsClass(victim,&Player)
       {
          if IsClass(what,&Player)
