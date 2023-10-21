@@ -2031,6 +2031,13 @@ messages:
       {
          return FALSE;
       }
+
+      % Monsters attacking players
+      if IsClass(what,&Monster)
+         AND Send(self,@IsCombatant,#who=victim)
+      {
+         return TRUE;
+      }
       % if the attacker is a reflection or evil twin check if poOriginal is a combatant.
       if IsClass(what,&Reflection)
          OR IsClass(what,&EvilTwin)
@@ -2075,14 +2082,6 @@ messages:
          }
 
          return TRUE;
-      }
-
-      % Monsters attacking players
-      if IsClass(what,&Monster)
-         AND Send(self,@IsCombatant,#who=victim)
-         AND Send(self,@FightInSession)
-      {
-         propagate;
       }
 
       % Spells with targets = all the rest of them     
