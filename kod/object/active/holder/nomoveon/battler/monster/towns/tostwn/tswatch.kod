@@ -67,8 +67,8 @@ resources:
       "You only have %i seconds left to accept %s%s's challenge."
 
    TosWatcher_cant_renege = "You cannot renege unless you are a combatant!"
-   TosWatcher_commence = "Fight!!!!"
-   TosWatcher_last_minute = "There is only one minute left in this match."
+    = "Fight!!!!"
+   TosWatcher_commenceTosWatcher_last_minute = "There is only one minute left in this match."
    TosWatcher_draw = "This match is a draw.  No one wins."
 
    TosWatcher_victor = "~BWe have a victor!~B"
@@ -196,6 +196,9 @@ resources:
       "This fight is not yet valid.  You may want to cancel the fight by "
       "saying 'Clear all', or add combatants to ensure a valid fight."
    TosWatcher_killed_by_spell = "%s%s was just killed by the %s spell!"
+   Summoned_reflection_killed = "%s spoils an illusion, laying bare the deception of %s%s!"
+   Summoned_twin_killed_other = "%s vanquishes the evil twin of %s%s!"
+   Summoned_twin_killed_self = "%s overpowers his evil twin!"
 
    TosWatcher_arena_help = \
       "Proceed all subcommands with the DM command.  'Start Tournament' "
@@ -993,11 +996,44 @@ messages:
       % We handle all death messages here, but not 'win fight' messages.
       % Those are handled after the renege messages.
 
-      if IsClass(what,&Spell) AND Send(self,@isCombatant,#who=victim)
+      local oOriginal;
+
+      if IsClass(what,&Spell) AND Send(self,@IsCombatant,#who=victim)
       {
          Send(self,@Say,#message_rsc=TosWatcher_killed_by_spell,
               #parm1=Send(victim,@GetCapDef),#parm2=Send(victim,@GetName),
               #parm3=Send(what,@GetName));
+      }
+
+      % Here we handle death of illusions, reflections, twins, and monsters
+      if IsClass(victim,&Reflection) AND
+         Send(self,@IsCombatant,#who=what)
+      {
+         oOriginal = Send(victim,@GetIllusionForm);
+
+         if Send(self,@IsCombatant,#who=oOriginal)
+         {
+            Send(self,@Say,#message_rsc=Summoned_reflection_killed,
+               #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
+         }
+      }
+
+      if IsClass(victim,&EvilTwin) AND
+         Send(self,@IsCombatant,#who=what)
+      {
+         oOriginal = Send(victim,@GetIllusionForm);
+         {
+            if oOriginal = what
+            {
+               Send(self,@Say,#message_rsc=Summoned_twin_self_kill,
+                  #parm1=Send(what,@GetName));
+            }
+            else
+            {
+               Send(self,@Say,#message_rsc=Summoned_twin_killed_other,
+                  #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
+            }
+         }
       }
       else
       {
@@ -2038,17 +2074,7 @@ messages:
       {
          return TRUE;
       }
-      % if the attacker is a reflection or evil twin check if poOriginal is a combatant.
-      if IsClass(what,&Reflection)
-         OR IsClass(what,&EvilTwin)
-      {
-         oOriginal = Send(what,@GetIllusionForm);
 
-         if Send(self,@IsCombatant,#who=oOriginal)
-         {
-            return TRUE;
-         }
-      }
       % if the attacker is not a combatant, attack fails.
       if NOT Send(self,@IsCombatant,#who=what)
       {
