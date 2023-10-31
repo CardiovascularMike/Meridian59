@@ -1115,6 +1115,7 @@ messages:
 
    ReqSomethingAttack(what=$,victim=$)
    {
+      local oOriginal;
       % if a fight isnt in session, attack fails.
       if NOT Send(self,@FightInSession)
       {
