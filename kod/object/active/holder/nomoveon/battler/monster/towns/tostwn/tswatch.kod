@@ -996,7 +996,7 @@ messages:
       % We handle all death messages here, but not 'win fight' messages.
       % Those are handled after the renege messages.
 
-      local oOriginal;
+      local oOriginal, vicname;
       debug("We are in tos watcher here.");
       if IsClass(what,&Spell) AND Send(self,@IsCombatant,#who=victim)
       {
@@ -1010,11 +1010,11 @@ messages:
          Send(self,@IsCombatant,#who=what)
       {
          oOriginal = Send(victim,@GetIllusionForm);
-
+         vicname = Send(victim,@GetName);
          if Send(self,@IsCombatant,#who=oOriginal)
          {
             Send(self,@Say,#message_rsc=Summoned_reflection_killed,
-               #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
+               #parm1=Send(what,@GetName),#parm2=vicname);
          }
       }
 
