@@ -1022,17 +1022,15 @@ messages:
          Send(self,@IsCombatant,#who=what)
       {
          oOriginal = Send(victim,@GetIllusionForm);
+         if oOriginal = what
          {
-            if oOriginal = what
-            {
-               Send(self,@Say,#message_rsc=Summoned_twin_self_kill,
-                  #parm1=Send(what,@GetName));
-            }
-            else
-            {
-               Send(self,@Say,#message_rsc=Summoned_twin_killed_other,
-                  #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
-            }
+            Send(self,@Say,#message_rsc=Summoned_twin_self_kill,
+               #parm1=Send(what,@GetName));
+         }
+         else
+         {
+            Send(self,@Say,#message_rsc=Summoned_twin_killed_other,
+               #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
          }
       }
       else
