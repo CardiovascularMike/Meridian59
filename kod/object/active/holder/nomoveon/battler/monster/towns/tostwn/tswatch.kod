@@ -196,8 +196,8 @@ resources:
       "This fight is not yet valid.  You may want to cancel the fight by "
       "saying 'Clear all', or add combatants to ensure a valid fight."
    TosWatcher_killed_by_spell = "%s%s was just killed by the %s spell!"
-   Summoned_reflection_killed = "%s spoils an illusion, laying bare the deception of %s%s!"
-   Summoned_twin_killed_other = "%s vanquishes the evil twin of %s%s!"
+   Summoned_reflection_killed = "%s spoils an illusion, laying bare the deception of %s%s !"
+   Summoned_twin_killed_other = "%s vanquishes the evil twin of %s%s !"
    Summoned_twin_self_kill = "%s overpowers his evil twin!"
 
    TosWatcher_arena_help = \
