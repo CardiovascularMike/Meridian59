@@ -68,7 +68,7 @@ resources:
 
    TosWatcher_cant_renege = "You cannot renege unless you are a combatant!"
    TosWatcher_commence = "Fight!!!!"
-   TosWatcher_commenceTosWatcher_last_minute = "There is only one minute left in this match."
+   TosWatcher_last_minute = "There is only one minute left in this match."
    TosWatcher_draw = "This match is a draw.  No one wins."
 
    TosWatcher_victor = "~BWe have a victor!~B"
