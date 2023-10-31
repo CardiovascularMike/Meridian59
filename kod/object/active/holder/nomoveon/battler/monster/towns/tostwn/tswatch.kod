@@ -1014,6 +1014,8 @@ messages:
          {
             Send(self,@Say,#message_rsc=Summoned_reflection_killed
                #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
+            
+            propagate;
          }
       }
 
