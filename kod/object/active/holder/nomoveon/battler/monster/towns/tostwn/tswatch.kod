@@ -997,7 +997,7 @@ messages:
       % Those are handled after the renege messages.
 
       local oOriginal;
-
+      debug("We are in tos watcher here.")
       if IsClass(what,&Spell) AND Send(self,@IsCombatant,#who=victim)
       {
          Send(self,@Say,#message_rsc=TosWatcher_killed_by_spell,
