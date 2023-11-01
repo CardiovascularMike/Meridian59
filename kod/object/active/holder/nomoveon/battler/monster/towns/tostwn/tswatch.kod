@@ -996,21 +996,11 @@ messages:
       % We handle all death messages here, but not 'win fight' messages.
       % Those are handled after the renege messages.
 
-      local oOriginal;
-      debug("We are in tos watcher here.");
-      if IsClass(what,&Spell) AND Send(self,@IsCombatant,#who=victim)
-      {
-         Send(self,@Say,#message_rsc=TosWatcher_killed_by_spell,
-              #parm1=Send(victim,@GetCapDef),#parm2=Send(victim,@GetName),
-              #parm3=Send(what,@GetName));
-      }
-
-      % Here we handle death of illusions, reflections, twins, and monsters
+      % First we handle death of illusions, reflections, twins, and monsters
       if IsClass(victim,&Reflection) AND
          Send(self,@IsCombatant,#who=what)
       {
-         oOriginal = Send(victim,@GetIllusionForm);
-         if Send(self,@IsCombatant,#who=oOriginal)
+         if Send(self,@IsCombatant,#who=Send(victim,@GetIllusionForm))
          {
             Send(self,@Say,#message_rsc=Summoned_reflection_killed,
                #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
@@ -1022,8 +1012,7 @@ messages:
       if IsClass(victim,&EvilTwin) AND
          Send(self,@IsCombatant,#who=what)
       {
-         oOriginal = Send(victim,@GetIllusionForm);
-         if oOriginal = what
+         if Send(victim,@GetIllusionForm) = what
          {
             Send(self,@Say,#message_rsc=Summoned_twin_self_kill,
                #parm1=Send(what,@GetName));
@@ -1033,10 +1022,17 @@ messages:
             Send(self,@Say,#message_rsc=Summoned_twin_killed_other,
                #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
          }
+         propagate;
+      }
+
+      if IsClass(what,&Spell) AND Send(self,@IsCombatant,#who=victim)
+      {
+         Send(self,@Say,#message_rsc=TosWatcher_killed_by_spell,
+              #parm1=Send(victim,@GetCapDef),#parm2=Send(victim,@GetName),
+              #parm3=Send(what,@GetName));
       }
       else
       {
-
          if victim = poChampion
          {
                 Send(self,@Say,#message_rsc=TosWatcher_killed_champion,
