@@ -1024,6 +1024,11 @@ messages:
          }
          propagate;
       }
+      % Watcher is silent when a random monster or an apparition is killed
+      if IsClass(victim,&Monster)
+      {
+         propagate;
+      }
 
       if IsClass(what,&Spell) AND Send(self,@IsCombatant,#who=victim)
       {
