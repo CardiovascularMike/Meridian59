@@ -1203,7 +1203,7 @@ messages:
          oWatcher = Send(self,@GetWatcher);
 
          % The watcher decides if the attack moves forward
-         if NOT Send(oWatcher,@ReqSomethingAttack,#what=what, #victim=victim)
+         if oWatcher <> $ AND NOT Send(oWatcher,@ReqSomethingAttack,#what=what, #victim=victim)
          {
             return FALSE;
          }
