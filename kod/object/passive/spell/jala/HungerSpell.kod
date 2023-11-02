@@ -1,0 +1,71 @@
+% Meridian 59, Copyright 1994-2012 Andrew Kirmse and Chris Kirmse.
+% All rights reserved.
+%
+% This software is distributed under a license that is described in
+% the LICENSE file that accompanies it.
+%
+% Meridian is a registered trademark.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+HungerSpell is Jala
+
+constants:
+
+   include blakston.khd
+
+resources:
+
+   HungerSpell_name_rsc = "Hunger Spell"
+   HungerSpell_icon_rsc = imirth.bgf
+   HungerSpell_desc_rsc = \
+      "Just thinking about this traditional feast song makes your mouth water and your appetite grow."
+
+   Mirth_song = main.mid
+ 
+classvars:
+
+   vrName = HungerSpell_name_rsc
+   vrIcon = HungerSpell_icon_rsc
+   vrDesc = HungerSpell_desc_rsc
+
+   viSpell_num = SID_HUNGERSPELL
+   viSchool = SS_JALA
+   viSpell_level = 5
+
+   viMana = 2
+   viManaDrain = 2
+   viDrainTime = 5000
+
+   viSpellExertion = 2      
+   viChance_To_Increase = 25
+
+   viHarmful = FALSE
+
+properties:
+
+   prMusic = Mirth_song
+      
+messages:
+ 
+   ResetReagents()
+   {
+      plReagents = $;
+      plReagents = Cons([&Diamond,1],plReagents);
+      plReagents = Cons([&Snack,1],plReagents);
+
+      return;
+   }
+
+   AdjustStomachTime(time=0, iSpellPower=0)
+   "Reduces time passed in so that vigor regens faster.  Returns reduced time."
+   {
+      local iTime;
+
+      iTime = (100 + iSpellPower)/100;
+
+      return iTime;
+   }
+
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

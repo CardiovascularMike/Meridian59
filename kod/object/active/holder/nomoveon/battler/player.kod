@@ -1311,10 +1311,27 @@ messages:
    UpdateStomach()
    "Removes consumed food from stomach"
    {
-      local now;
+      local now, iTime, lJalaInfo, oJalaSpell, iJalaPower;
 
       now = GetTime();
-      piStomach = piStomach - (now - piTimeLastStomachUpdate) * FOOD_USE_RATE / 100;
+      iTime = now - piTimeLastStomachUpdate;
+
+      if poOwner <> $
+      {
+         lJalaInfo = Send(poOwner,@GetJalaInfo);
+
+         if lJalaInfo <> $
+         {
+            oJalaSpell = Nth(lJalaInfo,2);
+            if IsClass(oJalaSpell,&HungerSpell)
+            {
+               iJalaPower = Nth(Nth(lJalaInfo,3),3);
+               iTime = Send(oJalaSpell,@AdjustStomachTime,#time=iTime,#iSpellPower=iJalaPower);
+            }
+         }
+      }
+      
+      piStomach = piStomach - (iTime) * FOOD_USE_RATE / 100;
       piStomach = bound(piStomach,1,100);
       piTimeLastStomachUpdate = now;
       
