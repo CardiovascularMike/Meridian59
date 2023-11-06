@@ -45,6 +45,7 @@ classvars:
 properties:
 
    prMusic = Mirth_song
+   pbUserEffects = TRUE
       
 messages:
  
@@ -62,10 +63,12 @@ messages:
    {
       local iTime;
 
-      iTime = (100 + iSpellPower)/100;
+      iTime = (time * (200 + iSpellPower))/100;
 
       return iTime;
    }
+
+   
 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
