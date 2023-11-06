@@ -2063,7 +2063,7 @@ messages:
 
       % if the victim is not a combatant, attack fails.
       if IsClass(victim,&Player)
-         AND NOT Send(self,@I"sCombatant,#who=victim)
+         AND NOT Send(self,@IsCombatant,#who=victim)
       {
          return FALSE;
       }
@@ -2074,8 +2074,11 @@ messages:
       {
          if IsClass(what,&Reflection)
          {
-            debug("Reflections-Working-Test")
+            debug("Reflections-Working-Test");
          }
+         
+         debug("NonReflectionMonster.");
+
          return TRUE;
       }
 
