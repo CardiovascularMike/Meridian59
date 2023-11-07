@@ -106,6 +106,10 @@ resources:
    Goad_Draw = "`rFight is a draw.  This is a bug.  Please report it and specify combat type and all actions which led to this message."
    Goad_wont_fight = "`kApparently %s%s is too cowardly to fight.  Cowards should die . . . slowly."
 
+   Summoned_reflection_killed = "%q spoils an illusion, laying bare the deception of %q!"
+   Summoned_twin_killed_other = "%q vanquishes the evil twin of %q!"
+   Summoned_twin_self_kill = "%q overpowers his evil twin!"
+
    Goad_battle_midi_rsc = pk_sb16.mid
 
 classvars:
@@ -508,9 +512,42 @@ messages:
 
     SomethingKilled(what=$,victim=$)
     {
+      %% We handle all death messages here, but not 'win fight' messages.
+      %% Those are handled after the renege messages.
 
-        %% We handle all death messages here, but not 'win fight' messages.
-        %% Those are handled after the renege messages.
+      % First we handle death of illusions, reflections, twins, and monsters
+      if IsClass(victim,&Reflection) AND
+         Send(self,@IsCombatant,#who=what)
+      {
+         if Send(self,@IsCombatant,#who=Send(victim,@GetIllusionForm))
+         {
+            Send(self,@Say,#message_rsc=Summoned_reflection_killed,
+               #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
+            
+            propagate;
+         }
+      }
+
+      if IsClass(victim,&EvilTwin) AND
+         Send(self,@IsCombatant,#who=what)
+      {
+         if Send(victim,@GetIllusionForm) = what
+         {
+            Send(self,@Say,#message_rsc=Summoned_twin_self_kill,
+               #parm1=Send(what,@GetName));
+         }
+         else
+         {
+            Send(self,@Say,#message_rsc=Summoned_twin_killed_other,
+               #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
+         }
+         propagate;
+      }
+      % Watcher is silent when a random monster or an apparition is killed
+      if IsClass(victim,&Monster)
+      {
+         propagate;
+      }
 
         if isClass(what,&spell) and send(self,@isCombatant,#who=victim)
           {
@@ -1128,17 +1165,14 @@ messages:
       {
          return FALSE;
       }
-      % if the attacker is a reflection or evil twin check if poOriginal is a combatant.
-      if IsClass(what,&Reflection)
-         OR IsClass(what,&EvilTwin)
-      {
-         oOriginal = Send(what,@GetIllusionForm);
 
-         if Send(self,@IsCombatant,#who=oOriginal)
-         {
-            return TRUE;
-         }
+      % Monsters attacking players
+      if IsClass(what,&Monster)
+         AND Send(self,@IsCombatant,#who=victim)
+      {
+         return propagate;
       }
+
       % if the attacker is not a combatant, attack fails.
       if NOT Send(self,@IsCombatant,#who=what)
       {
@@ -1166,14 +1200,6 @@ messages:
            }
           return TRUE;
         }
-
-      %% monsters attacking players
-      if isClass(what,&monster)
-      AND send(self,@isCombatant,#who=victim)
-      AND send(self,@FightInSession)
-      {
-          propagate;
-      }
 
       %% spells with targets = all the rest of them     
 
