@@ -549,40 +549,40 @@ messages:
          propagate;
       }
 
-        if isClass(what,&spell) and send(self,@isCombatant,#who=victim)
-          {
-             send(self,@say,#message_rsc=Goad_killed_by_spell,
-                #parm1=send(victim,@getcapdef),
+      if isClass(what,&spell) and send(self,@isCombatant,#who=victim)
+      {
+         send(self,@say,#message_rsc=Goad_killed_by_spell,
+            #parm1=send(victim,@getcapdef),
             #parm2=send(victim,@getname),
             #parm3=send(what,@getname));
-
-          }
-        else
-          {
-            if victim = poChampion
-              {
-                send(self,@say,#message_rsc=Goad_killed_champion,
-                   #parm1=send(what,@getcapdef),#parm2=send(what,@getname),
-                   #parm3=send(victim,@getdef),#parm4=send(victim,@getname));
-              }
+      }
+      else
+      {
+         if victim = poChampion
+         {
+            send(self,@say,#message_rsc=Goad_killed_champion,
+               #parm1=send(what,@getcapdef),#parm2=send(what,@getname),
+               #parm3=send(victim,@getdef),#parm4=send(victim,@getname));
+         }
+         else
+         {
+            if what = poChampion
+            {
+               send(self,@say,#message_rsc=Goad_champion_killed,
+                  #parm1=send(victim,@getdef),
+                  #parm2=send(victim,@getname));
+            }
             else
-              {
-                if what = poChampion
-                  {
-                     send(self,@say,#message_rsc=Goad_champion_killed,
-                       #parm1=send(victim,@getdef),
-                       #parm2=send(victim,@getname));
-                  }
-                else
-                  {
-                    send(self,@say,#message_rsc=Goad_someone_killed,
-                       #parm1=send(what,@getCapdef),#parm2=send(what,@getname),
-                       #parm3=send(victim,@getdef),#parm4=send(victim,@getname));
-                  }
-              }
-        }
-        send(self,@CombatantReneges,#who=victim,#died=TRUE);
-        propagate;
+            {
+               send(self,@say,#message_rsc=Goad_someone_killed,
+                  #parm1=send(what,@getCapdef),#parm2=send(what,@getname),
+                  #parm3=send(victim,@getdef),#parm4=send(victim,@getname));
+            }
+         }
+      }
+
+      send(self,@CombatantReneges,#who=victim,#died=TRUE);
+      propagate;
     }
 
     CheckForWinner()
@@ -1152,7 +1152,6 @@ messages:
 
    ReqSomethingAttack(what=$,victim=$)
    {
-      local oOriginal;
       % if a fight isnt in session, attack fails.
       if NOT Send(self,@FightInSession)
       {
@@ -1182,7 +1181,7 @@ messages:
       %% return true as long as a fight is on, and 
       if victim = $
         {
-         if not send(self,@isCombatant,#who=what)         
+         if not send(self,@IsCombatant,#who=what)         
            {
               if isClass(what,&player)
                 {
@@ -1203,8 +1202,8 @@ messages:
 
       %% spells with targets = all the rest of them     
 
-      if (not send(self,@isCombatant,#who=what) OR
-         not send(self,@isCombatant,#who=victim)) AND
+      if (not send(self,@IsCombatant,#who=what) OR
+         not send(self,@IsCombatant,#who=victim)) AND
          isClass(victim,&player)
            {
               if isClass(what,&player)
