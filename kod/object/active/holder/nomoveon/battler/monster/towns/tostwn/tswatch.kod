@@ -2072,7 +2072,7 @@ messages:
       if IsClass(what,&Monster)
          AND Send(self,@IsCombatant,#who=victim)
       {
-         return propagate;
+         propagate;
       }
 
       % if the attacker is not a combatant, attack fails.
