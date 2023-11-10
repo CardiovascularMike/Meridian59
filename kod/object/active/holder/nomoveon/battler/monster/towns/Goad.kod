@@ -106,9 +106,9 @@ resources:
    Goad_Draw = "`rFight is a draw.  This is a bug.  Please report it and specify combat type and all actions which led to this message."
    Goad_wont_fight = "`kApparently %s%s is too cowardly to fight.  Cowards should die . . . slowly."
 
-   Summoned_reflection_killed = "%q spoils an illusion, laying bare the deception of %q!"
-   Summoned_twin_killed_other = "%q vanquishes the evil twin of %q!"
-   Summoned_twin_self_kill = "%q overpowers his evil twin!"
+   Goad_Summoned_reflection_killed = "%q spoils an illusion, laying bare the deception of %q!"
+   Goad_Summoned_twin_killed_other = "%q vanquishes the evil twin of %q!"
+   Goad_Summoned_twin_self_kill = "%q overpowers his evil twin!"
 
    Goad_battle_midi_rsc = pk_sb16.mid
 
@@ -521,7 +521,7 @@ messages:
       {
          if Send(self,@IsCombatant,#who=Send(victim,@GetIllusionForm))
          {
-            Send(self,@Say,#message_rsc=Summoned_reflection_killed,
+            Send(self,@Say,#message_rsc=Goad_Summoned_reflection_killed,
                #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
             
             propagate;
@@ -533,12 +533,12 @@ messages:
       {
          if Send(victim,@GetIllusionForm) = what
          {
-            Send(self,@Say,#message_rsc=Summoned_twin_self_kill,
+            Send(self,@Say,#message_rsc=Goad_Summoned_twin_self_kill,
                #parm1=Send(what,@GetName));
          }
          else
          {
-            Send(self,@Say,#message_rsc=Summoned_twin_killed_other,
+            Send(self,@Say,#message_rsc=Goad_Summoned_twin_killed_other,
                #parm1=Send(what,@GetName),#parm2=Send(victim,@GetName));
          }
          propagate;
