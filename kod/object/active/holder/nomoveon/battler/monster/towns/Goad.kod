@@ -1223,9 +1223,8 @@ messages:
 
       %%% Some spells don't work in Goad's Grinder - November 2023
       %%% Note that reflection does work - monster just falls into lava
-      if IsClass(oSpell,&Reflection) OR
-         IsClass(oSpell,&EvilTwin) OR
-         IsClass(oSpell,&Apparition)
+      if oSpell <> $
+         AND (IsClass(oSpell,&Reflection) OR IsClass(oSpell,&EvilTwin) OR IsClass(oSpell,&Apparition))
          {
             if IsClass(who,&player)
                 {
