@@ -107,6 +107,7 @@ resources:
    Goad_wont_fight = "`kApparently %s%s is too cowardly to fight.  Cowards should die . . . slowly."
 
    Goad_no_summons = "I thirst for bloody battle, not magical parlor tricks!"
+
    Goad_battle_midi_rsc = pk_sb16.mid
 
 classvars:
@@ -1212,7 +1213,7 @@ messages:
 
       %%% Can't cast spells unless a fight is in session
       if ptFight = $
-           {
+         {
               if IsClass(who,&player)
                 {
                    send(self,@SayToOne,#target=who,#message_rsc=Goad_no_fighting_yet);
@@ -1222,15 +1223,14 @@ messages:
 
       %%% Some spells don't work in Goad's Grinder - November 2023
       %%% Note that reflection does work - monster just falls into lava
-      if oSpell <> $
-         AND (IsClass(oSpell,&Reflection) 
-            OR IsClass(oSpell,&EvilTwin) 
-            OR IsClass(oSpell,&Apparition))
+      if IsClass(oSpell,&Reflection)
+         OR IsClass(oSpell,&EvilTwin)
+         OR IsClass(oSpell,&Apparition)
          {
-            if IsClass(who,&User)
-                {
-                   send(self,@SayToOne,#target=who,#message_rsc=Goad_no_summons);
-                }
+            if IsClass(who,&player)
+            {
+               send(self,@SayToOne,#target=who,#message_rsc=Goad_no_summons);
+            }
             return FALSE;
          }
 
