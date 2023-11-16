@@ -1239,7 +1239,7 @@ messages:
                         #parm1=send(oSpell,@getname));
             return FALSE;
          }
-      propagate;
+      return TRUE;
    }
 
    GetCombatName(style = $)
