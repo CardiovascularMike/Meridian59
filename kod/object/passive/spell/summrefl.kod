@@ -153,6 +153,11 @@ messages:
       return count;
    }
 
+   SpellBannedInGoads()
+   {
+      return TRUE;
+   }
+
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
