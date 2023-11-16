@@ -211,7 +211,7 @@ messages:
 
    SpellBannedInArena()
    {
-      return TRUE;
+      return FALSE;
    }
 
 
