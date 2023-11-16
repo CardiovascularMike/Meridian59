@@ -685,7 +685,7 @@ messages:
 
       if flag
       {
-         debug("flag worked.")
+         debug("flag worked.");
          ptCheckLavaTimer = CreateTimer(self,@Checklava,(1*1000));
       }
 
