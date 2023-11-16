@@ -710,6 +710,7 @@ messages:
       if ptCheckLavaTimer <> $
       {
          DeleteTimer(ptCheckLavaTimer);
+         ptCheckLavaTimer = $;
       }
       
       if ptShrineUsedTimer <> $
