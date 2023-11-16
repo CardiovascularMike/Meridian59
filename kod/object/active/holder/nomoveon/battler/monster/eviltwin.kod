@@ -281,6 +281,7 @@ messages:
 
    }
 
+
    GetOriginalInfo()
    {
       vrIcon = send(poOriginal,@GetPlayerIcon);
@@ -581,6 +582,11 @@ messages:
       Send(what,@SendLookPlayer,#what=poOriginal);
       
       return;
+   }
+
+   SpellBannedInGoads()
+   {
+      return TRUE;
    }
 
 
