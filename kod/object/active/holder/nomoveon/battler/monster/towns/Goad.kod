@@ -822,7 +822,7 @@ messages:
            %%Only one style availible: Duel.
            %send(self,@say,#message_rsc=Goad_must_choose_style);
            %return;    
-           post(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what); 
+           send(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what); 
          }
       if not send(self,@AcceptingChampions)
       {
