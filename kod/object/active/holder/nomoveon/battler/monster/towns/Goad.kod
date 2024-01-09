@@ -78,7 +78,7 @@ resources:
 
    Goad_must_choose_style = "First things first . . . are we to have a duel or a bloodbath?"     
    Goad_cant_switch = "You can't change that now, worm."
-   Goad_new_combat_style = "Excellent.  I've been thirsting for a good %s.  Now, who'll say the magic word, \"champion\"?"
+   Goad_new_combat_style = "Excellent.  I've been thirsting for a good %s."
 
    Goad_style_one_on_one = "duel"
    Goad_style_last_man_standing = "bloodbath"
@@ -820,8 +820,6 @@ messages:
       if piCombat_style = STYLE_NO_FIGHT
          {
            %%Only one style availible: Duel.
-           %send(self,@say,#message_rsc=Goad_must_choose_style);
-           %return;    
            send(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what); 
          }
       if not send(self,@AcceptingChampions)
@@ -859,15 +857,12 @@ messages:
    {
       if piCombat_style = STYLE_NO_FIGHT
          {
-           post(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what);
-           %send(self,@saytoOne,#target=what,#message_rsc=Goad_must_choose_style);
-           %return;     
+           send(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what);
          }
       if send(self,@FightInSession)
         {
            send(self,@SayToOne,#target=what,#message_rsc=Goad_fight_in_progress);
            return;
-
         } 
       if send(self,@AcceptingChampions)
         {
