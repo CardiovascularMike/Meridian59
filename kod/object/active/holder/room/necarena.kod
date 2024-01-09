@@ -659,6 +659,11 @@ messages:
    {
       local i, oVictim, irow, icol, ifine_row, ifine_col, bInStands;
 
+      #-Lava Timer expired-set it to null-#
+      #-If a player dying in the lava results in an end fight call-#
+      #-This prevents end fight from trying to delete a non existant timer-#
+      ptCheckLavaTimer = $;
+      
       For i in plActive
       {
          if isClass(First(i),&User) AND Send(self,@InPlay,#what = First(i))
