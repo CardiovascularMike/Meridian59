@@ -67,7 +67,7 @@
 #define MIN_SIDE_MOVE (MOVEUNITS / 4)
 
 // Number of milliseconds between retrying to change rooms
-#define MOVE_OFF_ROOM_INTERVAL 1000
+#define MOVE_OFF_ROOM_INTERVAL 250
 // Time when we last tried to move off room
 static DWORD move_off_room_time = 0;
 // Time when next move is allowed; used only for teleporter nomoveons.
