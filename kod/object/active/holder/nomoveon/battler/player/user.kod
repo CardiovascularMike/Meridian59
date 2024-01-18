@@ -906,6 +906,8 @@ messages:
          %  room multiple times before they got their new room.
          if oRoom <> poOwner 
          {
+            % Give a break on speed hack detector as we are moving between rooms
+            piMovesCounter = piMovesCounter - 4
             return;
          }
 
