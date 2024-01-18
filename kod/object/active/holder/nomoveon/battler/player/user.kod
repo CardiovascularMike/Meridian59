@@ -907,7 +907,7 @@ messages:
          if oRoom <> poOwner 
          {
             % Give a break on speed hack detector as we are moving between rooms
-            piMovesCounter = piMovesCounter - 4;
+            piMovesCounter = -MOVEMENT_DELTA_LAG_THRESHOLD;
             return;
          }
 
