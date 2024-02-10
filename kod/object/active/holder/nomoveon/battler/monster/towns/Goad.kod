@@ -784,7 +784,7 @@ messages:
    "Someone in the room said 'champion'.  Net effect, if there is no "
    "champion, then make the talker the new champion."
    {
-      if piCombat_style = STYLE_NO_FIGHT
+      if piCombat_style <> STYLE_ONE_ON_ONE
          {
            Send(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what); 
          }
@@ -821,17 +821,14 @@ messages:
    "the match, but in general, this will fail if there is no champion, and "
    "will succeed only if there is a challenger spot open."
    {
-      if piCombat_style = STYLE_NO_FIGHT
+      if piCombat_style <> STYLE_ONE_ON_ONE
          {
-           post(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what);
-           %send(self,@saytoOne,#target=what,#message_rsc=Goad_must_choose_style);
-           %return;     
+           Send(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what);
          }
       if send(self,@FightInSession)
         {
            send(self,@SayToOne,#target=what,#message_rsc=Goad_fight_in_progress);
            return;
-
         } 
       if send(self,@AcceptingChampions)
         {
@@ -1210,39 +1207,33 @@ messages:
       propagate;
    }
 
-   GetCombatName(style = $)
+   GetCombatName()
    {
      if style = $
        {
          if piCombat_style = STYLE_ONE_ON_ONE
            { return Goad_style_one_on_one; }
-         if piCombat_style = STYLE_LAST_MAN_STANDING
-           { return Goad_style_last_man_standing; }
          DEBUG("GetCombatName called with invalid fighting style chosen!");
          return;
        }
-
-     if style = STYLE_ONE_ON_ONE
-        { return Goad_style_one_on_one; }
-     if style = STYLE_LAST_MAN_STANDING
-        { return Goad_style_last_man_standing; }
-
-     return;
    }
 
    SomethingEntered(what=$)
    {
-
-      if IsClass(what,&admin) and not send(what,@checkplayerflag,#flag=PFLAG_MORPHED)
-         and not send(what,@checkplayerflag,#flag=PFLAG_ANONYMOUS)
+      if IsClass(what,&Admin)
+         AND NOT Send(what,@IsDMStealthed)
+         AND NOT Send(what,@checkplayerflag,#flag=PFLAG_MORPHED)
+         AND NOT Send(what,@checkplayerflag,#flag=PFLAG_ANONYMOUS)
       {
          post(self,@say,#message_rsc=Goad_worship_admin,
             #parm1=send(what,@gettruename),#parm2=send(what,@getheshe));
 
          propagate;
       }
-      if IsClass(what,&DM) and not send(what,@checkplayerflag,#flag=PFLAG_MORPHED)
-         and not send(what,@checkplayerflag,#flag=PFLAG_ANONYMOUS)
+      if IsClass(what,&DM) 
+         AND NOT Send(what,@IsDMStealthed)
+         AND NOT send(what,@checkplayerflag,#flag=PFLAG_MORPHED)
+         AND NOT send(what,@checkplayerflag,#flag=PFLAG_ANONYMOUS)
       {
          post(self,@say,#message_rsc=Goad_worship_dm,
             #parm1=send(what,@getlordlady),#parm2=send(what,@getname));
