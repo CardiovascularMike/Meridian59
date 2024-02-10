@@ -1209,13 +1209,11 @@ messages:
 
    GetCombatName()
    {
-     if style = $
-       {
-         if piCombat_style = STYLE_ONE_ON_ONE
-           { return Goad_style_one_on_one; }
-         DEBUG("GetCombatName called with invalid fighting style chosen!");
-         return;
-       }
+      % There is only One vs One in Goad's.
+      if piCombat_style = STYLE_ONE_ON_ONE
+      { return Goad_style_one_on_one; }
+      DEBUG("GetCombatName called with invalid fighting style chosen!");
+      return;
    }
 
    SomethingEntered(what=$)
