@@ -1219,9 +1219,9 @@ messages:
    SomethingEntered(what=$)
    {
       if IsClass(what,&Admin)
-         AND NOT Send(what,@IsDMStealthed)
-         AND NOT Send(what,@checkplayerflag,#flag=PFLAG_MORPHED)
-         AND NOT Send(what,@checkplayerflag,#flag=PFLAG_ANONYMOUS)
+         AND NOT (Send(what,@IsDMStealthed)
+               OR Send(what,@checkplayerflag,#flag=PFLAG_MORPHED)
+               OR Send(what,@checkplayerflag,#flag=PFLAG_ANONYMOUS))
       {
          post(self,@say,#message_rsc=Goad_worship_admin,
             #parm1=send(what,@gettruename),#parm2=send(what,@getheshe));
