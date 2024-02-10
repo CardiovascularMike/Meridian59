@@ -123,7 +123,7 @@ classvars:
 
 properties:
 
-   piCombat_style = STYLE_NO_FIGHT
+   piCombat_style = STYLE_ONE_ON_ONE
 
    ptAdvert = $               %% every now and then, the Watcher sends off
                               %% a blurb, asking people to fight for him
@@ -246,7 +246,7 @@ messages:
    SetChampion(who=$)
    {
       if poChampion <> who
-      and (piCombat_style = STYLE_ONE_ON_ONE or
+      AND (piCombat_style = STYLE_ONE_ON_ONE OR
            piCombat_style = STYLE_LAST_MAN_STANDING)
       {
          poChampion = who;
@@ -766,19 +766,12 @@ messages:
             post(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what);
             return FALSE;
          }
-         %%Rumble style cut due to insuficient test.
-         %if StringEqual(string,"rumble")
-         %{
-            %post(self,@ChooseCombat,#style = STYLE_LAST_MAN_STANDING,#actor=what);
-            %return FALSE;
-         %}
       }
       if send(self,@FightInSession)
       {
          if StringEqual(string,"champion")
          or StringEqual(string,"challenge")
          or StringEqual(string,"duel")
-         or StringEqual(string,"rumble")
          {
             send(what,@msgsenduser,#message_rsc=Goad_not_during_fight);
             return FALSE;
@@ -793,10 +786,7 @@ messages:
    {
       if piCombat_style = STYLE_NO_FIGHT
          {
-           %%Only one style availible: Duel.
-           %send(self,@say,#message_rsc=Goad_must_choose_style);
-           %return;    
-           post(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what); 
+           Send(self,@ChooseCombat,#style = STYLE_ONE_ON_ONE,#actor=what); 
          }
       if not send(self,@AcceptingChampions)
       {
