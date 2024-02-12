@@ -1790,6 +1790,19 @@ messages:
       return;
    }
 
+   RestartMusic()
+   {
+      local each_obj;
+      for each_obj in plActive
+      {
+         if IsClass(each_obj,&Player)
+         {
+            Send(each_obj,@SendRoomMusic,#music_rsc=prMusic);
+         }
+      }
+      return;
+   }
+
    SendEnchantmentIcons(what = $)
    "Users send this after GC to redisplay the enchantments in the room"
    {
