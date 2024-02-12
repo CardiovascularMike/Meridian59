@@ -1792,12 +1792,12 @@ messages:
 
    RestartMusic()
    {
-      local each_obj;
-      for each_obj in plActive
+      local i;
+      for i in Send(self,@GetHolderActive)
       {
-         if IsClass(each_obj,&Player)
+         if IsClass(first(i),&user)
          {
-            Send(each_obj,@SendRoomMusic,#music_rsc=prMusic);
+            Send(first(i),@SendRoomMusic,#music_rsc=prMusic);
          }
       }
       return;
