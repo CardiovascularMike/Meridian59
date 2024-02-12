@@ -1798,6 +1798,7 @@ messages:
          if IsClass(first(i),&user)
          {
             Send(first(i),@SendRoomMusic,#music_rsc=prMusic);
+            debug("We tried to restart music.")
          }
       }
       return;
