@@ -481,6 +481,7 @@ void PlayMidiRsc(ID rsc)
    }
 #endif
    NewMusic(SOUND_MIDI, rsc);
+   bg_music = 0;
 }
 /******************************************************************************/
 /*
