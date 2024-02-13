@@ -155,7 +155,7 @@ DWORD OpenMidiFile(const char *lpszMIDIFileName)
       return dwReturn;
 
    midi_element = mciOpenParms.wDeviceID;
-   debug(("midi element goopy goopy = %d\n", midi_element));
+   debug(("midi element DBUG CHECK 1 = %d\n", midi_element));
    return 0;
 }
 /******************************************************************************/
@@ -218,7 +218,7 @@ DWORD PlayMidiFile(HWND hWndNotify, char *fname)
 	//	the background music when done playing.
 	AIL_register_EOS_callback(hseqImmediate, MIDIDoneCallback);
 
-	debug(( "Playing music file %s.\n", fname ));
+	debug(( "Playing music file DBUG CHECK 2 %s.\n", fname ));
 	playing_midi = True;
 	return 0;
 #else
@@ -245,7 +245,7 @@ DWORD PlayMidiFile(HWND hWndNotify, char *fname)
          return dwReturn;
       }
       
-      debug(("Playing MIDI file, element = %d\n", midi_element));
+      debug(("Playing MIDI file, DBUG CHECK 3 element = %d\n", midi_element));
       playing_midi = True;
       return 0;
    }
@@ -312,7 +312,7 @@ DWORD PlayMusicFile(HWND hWndNotify, const char *fname)
 
 	// start playing
 	AIL_start_sample( hseqBackground );
-	debug(( "Playing music file %s.\n", filename.c_str() ));
+	debug(( "Playing music DBUG CHECK 4 file %s.\n", filename.c_str() ));
 	playing_music = True;
 	return 0;
 
@@ -352,7 +352,7 @@ DWORD PlayMusicFile(HWND hWndNotify, const char *fname)
       return dwReturn;
    }
 
-   debug(("Playing music file,  glopy glopy element = %d\n", midi_element));
+   debug(("Playing music file, DBUG CHECK 5 element = %d\n", midi_element));
    playing_music = True;
    return 0;
 #endif
@@ -394,7 +394,7 @@ void PauseMusic(void)
 		AIL_stop_sample( hseqBackground );
 	// indicate we are paused
 	music_pos = 1;
-	debug(( "Pausing music.\n" ));
+	debug(( "Pausing DBUG CHECK 6 music.\n" ));
 #else
    MCI_STATUS_PARMS mciStatusParms;
 
@@ -412,7 +412,7 @@ void PauseMusic(void)
                   MCI_STATUS_ITEM, (DWORD_PTR)(LPVOID) &mciStatusParms);
    time_format = mciStatusParms.dwReturn;
 
-   debug(("Pausing, position = %ld\n", music_pos));
+   debug(("Pausing, DBUG CHECK 7 position = %ld\n", music_pos));
 #endif
 }
 /******************************************************************************/
@@ -430,7 +430,7 @@ void UnpauseMusic(void)
 		AIL_resume_sample(hseqBackground);
 	else
 		AIL_start_sample(hseqBackground);
-	debug(( "Unpausing music.\n" ));
+	debug(( "Unpausing DBUG CHECK 8 music.\n" ));
 #else
    MCI_SEEK_PARMS mciSeekParms;
    MCI_SET_PARMS  mciSetParms;
@@ -446,7 +446,7 @@ void UnpauseMusic(void)
    mciSeekParms.dwTo = music_pos;
    mciSendCommand(midi_element, MCI_SEEK,
                   MCI_TO, (DWORD_PTR)(LPVOID) &mciSeekParms);
-   debug(("Unpausing to  position = %ld\n", music_pos));
+   debug(("Unpausing to DBUG CHECK 9 position = %ld\n", music_pos));
 #endif
 }
 /******************************************************************************/
@@ -455,7 +455,7 @@ void UnpauseMusic(void)
  */
 void PlayMidiRsc(ID rsc)
 {
-   debug(("PlayMidiRsc %d\n", rsc));
+   debug(("PlayMidiRsc DBUG CHECK 10 %d\n", rsc));
 
    if (!config.play_music || !has_midi)      
       return;
@@ -490,7 +490,7 @@ void PlayMidiRsc(ID rsc)
  */
 void PlayMusicRsc(ID rsc)
 {
-   debug(("PlayMusicRsc %d\n", rsc));
+   debug(("PlayMusicRsc DBUG CHECK 11 %d\n", rsc));
 
    /* If we're already playing same music file, keep jammin' */
    if (playing_music)
@@ -498,7 +498,7 @@ void PlayMusicRsc(ID rsc)
       if (rsc != 0 && bg_music != 0 && 
           !stricmp(LookupNameRsc(rsc), LookupNameRsc(bg_music)))
 	  {
-		  debug(("Already playing that music.\n" ));
+		  debug(("Already playing that DBUG CHECK 12 music.\n" ));
         UnpauseMusic();
         return;
 	  }
@@ -565,14 +565,14 @@ void NewMusic(WPARAM type, ID rsc)
    case SOUND_MIDI:
       PlayMidiFile(hMain, fname);
 #ifndef M59_MSS
-      debug(("NewMusic MIDI, element = %d\n", midi_element));
+      debug(("NewMusic MIDI, DBUG CHECK 13 element = %d\n", midi_element));
 #endif
       break;
 
    case SOUND_MUSIC:
       PlayMusicFile(hMain, fname);
 #ifndef M59_MSS
-      debug(("NewMusic music, element = %d\n", midi_element));
+      debug(("NewMusic music, DBUG CHECK 14 element = %d\n", midi_element));
       /* bg_music = 0; */
 #endif
       break;
@@ -604,7 +604,7 @@ void MusicDone(UINT device)
       playing_midi = False;
       mciSendCommand(midi_element, MCI_CLOSE, 0, 0);   
 
-      debug(("Stopping MIDI device %d\n", device));
+      debug(("Stopping MIDI DBUG CHECK 15 device %d\n", device));
 
       /* Restart background music if appropriate */
       if (playing_music)
@@ -615,7 +615,7 @@ void MusicDone(UINT device)
    /* Loop background music */
    if (playing_music && device == midi_element)
    {
-      debug(("Stopping Music device %d\n", device));
+      debug(("Stopping Music DBUG CHECK 16 device %d\n", device));
       RestartMidiFile(midi_element);
       return;
    }
