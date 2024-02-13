@@ -155,13 +155,7 @@ DWORD OpenMidiFile(const char *lpszMIDIFileName)
       return dwReturn;
 
    midi_element = mciOpenParms.wDeviceID;
-   if (playing_midi == 1)
-      debug(("PLAYING MIDI TRUE"));
-   if (playing_music == 1)
-      debug(("PLAYING MUSIC TRUE"));
-   
    debug(("midi element DBUG CHECK 1 = %d\n", midi_element));
-
    return 0;
 }
 /******************************************************************************/
@@ -525,7 +519,6 @@ void PlayMusicRsc(ID rsc)
 #ifndef M59_MSS
    /* If sound is already going, wait for it to end */
    if (playing_midi)
-      debug(("CHECK 22."));
       return;
 #endif   
    NewMusic(SOUND_MUSIC, rsc);
