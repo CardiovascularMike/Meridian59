@@ -245,7 +245,7 @@ DWORD PlayMidiFile(HWND hWndNotify, char *fname)
          return dwReturn;
       }
       
-      debug(("Playing MIDI file, SNOOPY! element = %d\n", midi_element));
+      debug(("Playing MIDI file, element = %d\n", midi_element));
       playing_midi = True;
       return 0;
    }
@@ -460,7 +460,7 @@ void UnpauseMusic(void)
  */
 void PlayMidiRsc(ID rsc)
 {
-   debug(("PlayMidiRsc  ScubaSteve %d\n", rsc));
+   debug(("PlayMidiRsc %d\n", rsc));
 
    if (!config.play_music || !has_midi)      
       return;
