@@ -570,14 +570,14 @@ void NewMusic(WPARAM type, ID rsc)
    case SOUND_MIDI:
       PlayMidiFile(hMain, fname);
 #ifndef M59_MSS
-      debug(("NewMusic MIDI, slimey dave element = %d\n", midi_element));
+      debug(("NewMusic MIDI, element = %d\n", midi_element));
 #endif
       break;
 
    case SOUND_MUSIC:
       PlayMusicFile(hMain, fname);
 #ifndef M59_MSS
-      debug(("NewMusic music, jack in the box element = %d\n", midi_element));
+      debug(("NewMusic music, element = %d\n", midi_element));
       /* bg_music = 0; */
 #endif
       break;
@@ -632,7 +632,6 @@ void MusicDone(UINT device)
  */
 void MusicAbort(void)
 {
-   debug(("Got sent to abort somehow."));
    if (!has_midi)
       return;
 
