@@ -524,7 +524,7 @@ void PlayMusicRsc(ID rsc)
    if (playing_midi)
       return;
 #endif   
-   NewMusic(SOUND_MUSIC, rsc);
+   NewMusic(SOUND_MIDI, rsc);
 }
 /******************************************************************************/
 /*
