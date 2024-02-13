@@ -168,60 +168,60 @@ DWORD PlayMidiFile(HWND hWndNotify, char *fname)
    if (!has_midi)
       return 0;
 
-#ifdef M59_MSS
-	// If a sample was playing, end it
-	if( AIL_sample_status( hseqImmediate ) != SMP_DONE )
-		AIL_end_sample( hseqImmediate );
+   #ifdef M59_MSS
+	   // If a sample was playing, end it
+	   if( AIL_sample_status( hseqImmediate ) != SMP_DONE )
+		   AIL_end_sample( hseqImmediate );
 
-	// free memory from previous MIDI file
-	if( pMIDIImmediate )
-		AIL_mem_free_lock( pMIDIImmediate );
+	   // free memory from previous MIDI file
+	   if( pMIDIImmediate )
+		   AIL_mem_free_lock( pMIDIImmediate );
 
-	// First try MP3 file
-	char *ext = strstr( _strlwr( fname ), ".mid" );
-	if( ext != NULL )
-		strcpy( ext, ".mp3" );
+	   // First try MP3 file
+	   char *ext = strstr( _strlwr( fname ), ".mid" );
+	   if( ext != NULL )
+		   strcpy( ext, ".mp3" );
 
-	// load the file
-	pMIDIImmediate = (BYTE *) AIL_file_read( fname, NULL );
-	if( !pMIDIImmediate )
-	{
-      // Next try xmi file
-      ext = strstr(fname, ".mp3" );
-      if( ext != NULL )
-         strcpy( ext, ".xmi" );
+	   // load the file
+	   pMIDIImmediate = (BYTE *) AIL_file_read( fname, NULL );
+	   if( !pMIDIImmediate )
+	   {
+         // Next try xmi file
+         ext = strstr(fname, ".mp3" );
+         if( ext != NULL )
+            strcpy( ext, ".xmi" );
       
-      pMIDIImmediate = (BYTE *) AIL_file_read( fname, NULL );
-      if( !pMIDIImmediate )
-      {
-         debug(( "Failed to load music file %s.\n", fname ));
-         return 0;
-      }
-	}
+         pMIDIImmediate = (BYTE *) AIL_file_read( fname, NULL );
+         if( !pMIDIImmediate )
+         {
+            debug(( "Failed to load music file %s.\n", fname ));
+            return 0;
+         }
+	   }
 
-	// Initialize the sample
-	if (!AIL_set_named_sample_file(hseqImmediate, fname, pMIDIImmediate,
+	   // Initialize the sample
+	   if (!AIL_set_named_sample_file(hseqImmediate, fname, pMIDIImmediate,
                                   AIL_file_size(fname), 0))
-	{
-		debug(( "Failed to init music file.\n" ));
-		return 0;
-	}
+	   {
+		   debug(( "Failed to init music file.\n" ));
+		   return 0;
+	   }
 
-   // Set volume
-   float vol = ((float) config.music_volume) / CONFIG_MAX_VOLUME;
-	AIL_set_sample_volume_levels(hseqImmediate, vol, vol );
+      // Set volume
+      float vol = ((float) config.music_volume) / CONFIG_MAX_VOLUME;
+	   AIL_set_sample_volume_levels(hseqImmediate, vol, vol );
 
-	// start playing
-	AIL_start_sample(hseqImmediate);
+	   // start playing
+	   AIL_start_sample(hseqImmediate);
 
-	// Set end-of-sample callback so we can unpause
-	//	the background music when done playing.
-	AIL_register_EOS_callback(hseqImmediate, MIDIDoneCallback);
+	   // Set end-of-sample callback so we can unpause
+	   //	the background music when done playing.
+	   AIL_register_EOS_callback(hseqImmediate, MIDIDoneCallback);
 
-	debug(( "Playing music file DBUG CHECK 2 %s.\n", fname ));
-	playing_midi = True;
-	return 0;
-#else
+	   debug(( "Playing music file DBUG CHECK 2 %s.\n", fname ));
+	   playing_midi = True;
+	   return 0;
+   #else
    {
       DWORD dwReturn;
       MCI_PLAY_PARMS mciPlayParms;
@@ -332,6 +332,7 @@ DWORD PlayMusicFile(HWND hWndNotify, const char *fname)
 
    /* If already playing music, pick up where we left off */
    if (music_pos != 0)
+      debug(("dbug check 21"));
       UnpauseMusic();
 
    /*
@@ -436,6 +437,7 @@ void UnpauseMusic(void)
    MCI_SET_PARMS  mciSetParms;
 
    if (!has_midi)
+      debug(("Not has_midi - donno why"));
       return;
 
    /* Set time format */
@@ -535,20 +537,20 @@ void NewMusic(WPARAM type, ID rsc)
 	{
 		if( ( type == SOUND_MIDI ) && ( playing_midi ) )
 		{
-#ifdef M59_MSS
-			AIL_end_sample( hseqImmediate );
-#else
-			mciSendCommand(midi_element, MCI_CLOSE, 0, 0); 
-#endif
+         #ifdef M59_MSS
+			   AIL_end_sample( hseqImmediate );
+         #else
+			   mciSendCommand(midi_element, MCI_CLOSE, 0, 0); 
+         #endif
 			playing_midi = False;
 		}
 		else if( ( type == SOUND_MUSIC ) && ( playing_music ) )
 		{
-#ifdef M59_MSS
-			AIL_end_sample( hseqBackground );
-#else
-			mciSendCommand(midi_element, MCI_CLOSE, 0, 0); 
-#endif
+         #ifdef M59_MSS
+			   AIL_end_sample( hseqBackground );
+         #else
+			   mciSendCommand(midi_element, MCI_CLOSE, 0, 0); 
+         #endif
 			playing_music = False;
 			return;
 		}
@@ -562,19 +564,19 @@ void NewMusic(WPARAM type, ID rsc)
 
    switch (type)
    {
-   case SOUND_MIDI:
-      PlayMidiFile(hMain, fname);
-#ifndef M59_MSS
-      debug(("NewMusic MIDI, DBUG CHECK 13 element = %d\n", midi_element));
-#endif
-      break;
+      case SOUND_MIDI:
+         PlayMidiFile(hMain, fname);
+         #ifndef M59_MSS
+            debug(("NewMusic MIDI, DBUG CHECK 13 element = %d\n", midi_element));
+         #endif
+         break;
 
-   case SOUND_MUSIC:
-      PlayMusicFile(hMain, fname);
-#ifndef M59_MSS
-      debug(("NewMusic music, DBUG CHECK 14 element = %d\n", midi_element));
+      case SOUND_MUSIC:
+         PlayMusicFile(hMain, fname);
+      #ifndef M59_MSS
+         debug(("NewMusic music, DBUG CHECK 14 element = %d\n", midi_element));
       /* bg_music = 0; */
-#endif
+      #endif
       break;
    }
 }
