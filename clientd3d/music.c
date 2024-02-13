@@ -434,6 +434,7 @@ void UnpauseMusic(void)
 #else
    MCI_SEEK_PARMS mciSeekParms;
    MCI_SET_PARMS  mciSetParms;
+   MCI_PLAY_PARMS mciPlayParms;
 
    if (!has_midi)
       return;
@@ -446,6 +447,10 @@ void UnpauseMusic(void)
    mciSeekParms.dwTo = music_pos;
    mciSendCommand(midi_element, MCI_SEEK,
                   MCI_TO, (DWORD_PTR)(LPVOID) &mciSeekParms);
+   
+   mciPlayParms.dwCallback = (DWORD_PTR)hwnd;
+   mciSendCommand(midi_element, MCI_PLAY, MCI_NOTIFY, (DWORD_PTR)(LPVOID) &mciPlayParms);
+   
    debug(("Unpausing to  position = %ld\n", music_pos));
 #endif
 }
