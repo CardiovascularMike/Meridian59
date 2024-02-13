@@ -352,7 +352,7 @@ DWORD PlayMusicFile(HWND hWndNotify, const char *fname)
       return dwReturn;
    }
 
-   debug(("Playing music file, element = %d\n", midi_element));
+   debug(("Playing music file,  glopy glopy element = %d\n", midi_element));
    playing_music = True;
    return 0;
 #endif
@@ -499,6 +499,7 @@ void PlayMusicRsc(ID rsc)
           !stricmp(LookupNameRsc(rsc), LookupNameRsc(bg_music)))
 	  {
 		  debug(("Already playing that music.\n" ));
+        UnpauseMusic();
         return;
 	  }
 	}
