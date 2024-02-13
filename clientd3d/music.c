@@ -481,7 +481,7 @@ void PlayMidiRsc(ID rsc)
    }
 #endif
    NewMusic(SOUND_MIDI, rsc);
-   bg_music = 0;
+   /* bg_music = 0; */
 }
 /******************************************************************************/
 /*
@@ -572,7 +572,7 @@ void NewMusic(WPARAM type, ID rsc)
       PlayMusicFile(hMain, fname);
 #ifndef M59_MSS
       debug(("NewMusic music, element = %d\n", midi_element));
-      bg_music = 0;
+      /* bg_music = 0; */
 #endif
       break;
    }
