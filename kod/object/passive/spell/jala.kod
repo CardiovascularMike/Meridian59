@@ -284,7 +284,7 @@ messages:
       Send(where,@SomeoneSaid,#type=SAY_MESSAGE,#string=jala_song_ends,
            #what=self);
       % Send $ as midi_rsc to end music and resume default.
-      Send(oRoom,@RestartMusic);
+      Send(self,@RestartMusic);
       %Send(self,@StartMusic,#oCaster=oCaster,#rMusic=$);
       Send(oCaster,@ClearTranceFlag);
       
