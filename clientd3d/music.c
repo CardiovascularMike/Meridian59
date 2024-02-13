@@ -155,7 +155,7 @@ DWORD OpenMidiFile(const char *lpszMIDIFileName)
       return dwReturn;
 
    midi_element = mciOpenParms.wDeviceID;
-   debug(("midi element = %d\n", midi_element));
+   debug(("midi element goopy goopy = %d\n", midi_element));
    return 0;
 }
 /******************************************************************************/
