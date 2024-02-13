@@ -554,6 +554,7 @@ void NewMusic(WPARAM type, ID rsc)
 	}
 
 	if( (filename = LookupNameRsc(rsc)) == NULL )
+      debug(("Cant find file name for music"));
 		return;
 
    sprintf(fname, "%s\\%.*s", music_dir, FILENAME_MAX, filename);
