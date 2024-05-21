@@ -47,8 +47,21 @@ messages:
 
    NewUnused()
    {
+      local oRoom, lEnchantments, i;
+
       Send(poOwner,@RemoveOverlay,#what=self);
-      Send(poOwner,@BreakTrance,#event=EVENT_USE,#usewhat=self);
+
+      oRoom = Send(poOwner,@GetOwner);
+      lEnchantments = Send(oRoom,@GetEnchantmentList);
+      for i in lEnchantments
+      {
+         if IsClass(Nth(i,2),&Jala) AND Nth(Nth(i,3),2) = poOwner
+         {
+            Send(Nth(i,2),@BreakTrance,#who=poOwner,#event=EVENT_USE,#usewhat=self);
+            break;
+         }
+      }
+      % Send(oRoom,@BreakTrance,#event=EVENT_STEER);
       propagate;
    }
 
