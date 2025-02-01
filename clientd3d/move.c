@@ -261,10 +261,16 @@ void UserMovePlayer(int action)
    }
 
    last_move_action = action;
-   FindOffsets(move_distance, angle, &dx, &dy);
 
+   FindOffsets(move_distance, angle, &dx, &dy);
+   debug(("move_distance = %d, dt= %d \n", move_distance, dt));
    num_steps = max(1, min(STEPS_PER_MOVE, NUM_STEPS_PER_SECOND * dt / 1000));
 
+   if (move_distance == 512)
+   {
+      num_steps = num_steps * 2;
+   }
+   
    xinc = dx / num_steps;
    yinc = dy / num_steps;
 
