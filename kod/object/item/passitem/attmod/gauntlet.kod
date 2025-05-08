@@ -101,37 +101,7 @@ messages:
 
    NewUsed(what = $)
    {
-      local i, oFound, iPriority;
-      
-      oFound=$;
-      for i in send(what,@GetPlayerUsing)
-      {
-         iPriority = send(i,@ItemChangesArms);
-         if iPriority <> 0
-         {
-            if oFound = $ 
-            {
-               oFound = i;
-            }
-            else
-            {
-               if iPriority > send(oFound,@ItemChangesArms)
-               {
-                  oFound = i;
-               }
-            }	    
-         }	 
-      }
-      
-      if oFound <> $
-      {
-         send(oFound,@DoPlayerArt); 
-      }
-      else
-      {
-         send(what,@ResetPlayerArms);
-      }
-
+      post(poOwner,@ResetPlayerArms);
       % We're also a defense modifier
       Send(what,@AddDefenseModifier,#what=self);
       
@@ -140,37 +110,8 @@ messages:
 
    NewUnused(what = $)
    {
-      local i, oFound, iPriority;
       
-      oFound=$;
-      for i in send(what,@GetPlayerUsing)
-      {
-         iPriority = send(i,@ItemChangesArms);
-         if iPriority <> 0
-         {
-            if oFound <> $ 
-            {
-               if iPriority > send(oFound,@ItemChangesArms)
-               {
-                  oFound = i;
-               }
-            }
-            else
-            {
-               oFound = i;
-            }
-         }	 
-      }
-      
-      if oFound <> $
-      {
-         send(oFound,@DoPlayerArt); 
-      }
-      else
-      {
-         send(what,@ResetPlayerArms);
-      }
-
+      post(poOwner,@ResetPlayerArms);
       % We're also a defense modifier
       Send(what,@RemoveDefenseModifier,#what=self);
 
@@ -190,73 +131,12 @@ messages:
    {
       return TRUE;
    }
-   
-   GetOverrideRightArm(who=$)
-   {  
-      local i, bFound;
-      
-      bFound = FALSE;
-      for i in send(who,@GetPlayerUsing)
-      {
-         if isClass(i,&TankTop)
-         {
-            bFound = TRUE;
-            
-            break;
-         }
-      }
-      
-      if bFound
-      {
-         if send(who,@GetGender) = GENDER_MALE
-         {
-            return barearm_rightarm_gauntlet_male;
-         }
-      
-         return barearm_rightarm_gauntlet_female;
-      }      
-      
-      if send(who,@GetGender) = GENDER_MALE
-      {
-         return standardshirt_rightarm_gauntlet_male;
-      }
-      
-      return standardshirt_rightarm_gauntlet_female;
-   }
 
-   GetOverrideLeftArm(who=$)
+   OverrideArmCount()
    {
-      local i, bFound;
-
-      bFound = FALSE;
-      for i in send(who,@GetPlayerUsing)
-      {
-         if isClass(i,&TankTop)
-         {
-            bFound = TRUE;
-
-            break;
-         }
-      }
-      
-      if bFound
-      {
-         if send(who,@GetGender) = GENDER_MALE
-         {
-            return barearm_leftarm_gauntlet_male;
-         }
-      
-         return barearm_leftarm_gauntlet_female;
-      }
-
-      if send(who,@GetGender) = GENDER_MALE
-      {
-         return standardshirt_leftarm_gauntlet_male;
-      }
-      
-      return standardshirt_leftarm_gauntlet_female;
+      return 2;
    }
-
+   
    % No alterations when we hit the target....
    WeaponHitTarget()
    {
